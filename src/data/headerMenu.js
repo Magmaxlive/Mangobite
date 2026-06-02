@@ -6,17 +6,17 @@ const headerMenu = [
 
     {
         title:'mango story',
-        link:'/mangostory'
+        link:'/mango-story'
     },
 
     {
         title:'mango journey',
-        link:'/mangojourney'
+        link:'/mango-journey'
     },
 
     {
         title:'health bites',
-        link:'/healthbites'
+        link:'/health-bites'
     },
 
     {

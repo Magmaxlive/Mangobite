@@ -7,8 +7,8 @@ import { FaFacebookF,FaInstagram,FaPhoneAlt  } from "react-icons/fa";
 export default function Footer() {
     const links = [
         { title: 'Home', href: '/' },
-        { title: 'Mango Story', href: '/mangostory' },
-        { title: 'Mango Journey', href: '/mangojourney' },
+        { title: 'Mango Story', href: '/mango-story' },
+        { title: 'Mango Journey', href: '/mango-journey' },
         { title: 'Contact us', href: '/contact' },
         { title: 'refund policy', href: '/refund-policy' },
         { title: 'blogs', href: '/blogs' },
