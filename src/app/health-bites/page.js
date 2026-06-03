@@ -5,7 +5,7 @@ import React from 'react'
 
 export default function page() {
   return (
-    <div className='flex flex-col gap-12 [overflow-x:clip]'>
+    <div className='flex flex-col [overflow-x:clip]'>
         <PageBanner
             minorTitle="mango bites"
             title="health bites"
@@ -15,7 +15,7 @@ export default function page() {
             ]}
         />
 
-        <div className="flex flex-col gap-8  pb-20 px-8 max-w-7xl mx-auto">
+        <div className="flex flex-col gap-8 pt-12  pb-20 px-8 max-w-7xl mx-auto">
             <SectionHeading
                 minorHeading="why mangoes"
                 mainHeading="health benefits"

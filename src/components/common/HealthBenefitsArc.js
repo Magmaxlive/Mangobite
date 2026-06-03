@@ -4,13 +4,13 @@ import Image from 'next/image'
 
 const benefits = [
   { id: 0, title: 'Rich in Nutrients', description: 'Mangoes are a rich source of essential nutrients, including vitamin C, vitamin A, vitamin E, vitamin K, vitamin B6, potassium, copper, and magnesium. These nutrients play vital roles in various bodily functions and contribute to overall health.' },
-  { id: 1, title: 'Boosts Immune System', description: 'Mangoes are packed with vitamin C and other antioxidants that strengthen the immune system, helping the body fight off infections and stay resilient against illness.' },
-  { id: 2, title: 'Supports Digestive Health', description: 'Mangoes contain digestive enzymes and dietary fiber that promote a healthy gut, improve digestion, and help prevent constipation and other digestive issues.' },
-  { id: 3, title: 'Maintains Eye Health', description: 'Mangoes are rich in vitamin A and antioxidants like lutein and zeaxanthin, which are crucial for maintaining healthy eyesight and protecting against age-related macular degeneration.' },
-  { id: 4, title: 'Regulates Blood Pressure', description: 'The potassium and magnesium found in mangoes help maintain healthy blood pressure, reducing the risk of hypertension and supporting overall cardiovascular health.' },
-  { id: 5, title: 'Enhances Heart Health', description: 'Mangoes are rich in fiber, potassium, and antioxidants that support heart health by lowering bad cholesterol and reducing the risk of heart disease.' },
-  { id: 6, title: 'Aids Weight Management', description: 'Mangoes are low in calories and high in fiber, helping you feel full for longer. Their natural sweetness can satisfy cravings while supporting a healthy weight.' },
-  { id: 7, title: 'Fights Inflammation', description: 'Mangoes contain powerful polyphenols and antioxidants with anti-inflammatory properties that help reduce chronic inflammation linked to many serious diseases.' },
+  { id: 1, title: 'Boosts Immune System', description: 'The high vitamin C content in mangoes helps strengthen the immune system, making the body more resilient against infections and illnesses.' },
+  { id: 2, title: 'Supports Digestive Health', description: 'Mangoes contain dietary fibre, which aids digestion and helps prevent constipation. The enzymes present in mangoes, such as amylases, facilitate the breakdown of carbohydrates and promote better digestion.' },
+  { id: 3, title: 'Maintains Eye Health', description: 'Mangoes are rich in vitamin A, which is essential for maintaining good vision and eye health. It helps prevent dry eyes and night blindness.' },
+  { id: 4, title: 'Regulates Blood Pressure', description: 'The potassium content in mangoes helps regulate blood pressure levels, reducing the risk of hypertension and related cardiovascular issues.' },
+  { id: 5, title: 'Enhances Heart Health', description: 'Mangoes contain antioxidants, fiber, and potassium, which collectively contribute to heart health by reducing cholesterol levels, supporting healthy blood flow, and lowering the risk of heart disease.' },
+  { id: 6, title: 'Aids Weight Management', description: 'Despite being naturally sweet, mangoes can be part of a healthy weight management plan when consumed in moderation due to their fiber content, which promotes satiety.' },
+  { id: 7, title: 'Fights Inflammation', description: "Mangoes' anti-inflammatory properties can help reduce inflammation in the body, potentially providing relief for conditions like arthritis." },
 ]
 
 const CX = 450, CY = 440, R = 330, N = 8

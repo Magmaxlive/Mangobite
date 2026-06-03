@@ -11,6 +11,8 @@
   --color-banner:#1e1e1e;
   --color-accent:#e8c89a;
   --color-grayText:#aaaaaa;
+  --color-mangoBg:#8f7838;
+  --color-mangoYellow:#ffbe00;
   --font-acme: var(--font-acme);
   --font-nunito: var(--font-nunito);
 }
