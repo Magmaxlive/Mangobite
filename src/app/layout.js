@@ -2,6 +2,8 @@ import { Acme, Poppins,Nunito } from "next/font/google";
 import "./globals.css";
 import Header from "../components/common/Header";
 import Footer from "@/components/common/Footer";
+import { CartProvider } from "@/context/CartContext";
+import CartDrawer from "@/components/common/CartDrawer";
 
 
 const acme = Acme({
@@ -35,9 +37,12 @@ export default function RootLayout({ children }) {
       className={`${poppins.variable} ${acme.variable} ${nunito.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <Header/>
-        {children}
-        <Footer/>
+        <CartProvider>
+          <Header/>
+          <CartDrawer/>
+          {children}
+          <Footer/>
+        </CartProvider>
       </body>
     </html>
   );

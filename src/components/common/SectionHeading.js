@@ -2,7 +2,9 @@
 export default function SectionHeading(props) {
   return (
     <div className={`flex flex-col gap-6 ${props.class || 'justify-center items-center text-center'}`}>
+      {props.minorHeading &&
       <h3 className={`uppercase text-xs tracking-wide font-semibold ${props.minorHeadingColor || 'text-secondary'}`}>{props.minorHeading}</h3>
+      }
         {props.mainHeading &&
           <div className="flex items-center justify-center gap-3">
             <svg width="50" height="16" viewBox="0 0 50 16" fill="none" className={`flex-shrink-0 ${props.mainHeadingColor || 'text-primary'}`}>
@@ -16,7 +18,7 @@ export default function SectionHeading(props) {
         }
 
         {props.paragraph &&
-              <div className={`text-base space-y-2 font-normal  text-pretty max-w-4xl ${props.paragraphColor || 'text-(--color-text)'}`}>{props.paragraph}</div>
+              <div className={`text-base space-y-2 font-normal  text-pretty max-w-4xl ${props.paragraphColor || 'text-banner'}`}>{props.paragraph}</div>
 
         }
     </div>

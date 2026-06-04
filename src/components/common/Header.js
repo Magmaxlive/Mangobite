@@ -7,12 +7,14 @@ import headerMenu from '../../data/headerMenu';
 import Link from 'next/link';
 import { Search,UserRound,ShoppingBag } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+import { useCart } from '@/context/CartContext';
 
 
 const Navbar = () => {
     const [drawerOpen,setDrawerOpen]=useState(false)
     const [scrolled,setScrolled]=useState(false)
     const pathname=usePathname()
+    const { setCartOpen, itemCount } = useCart()
 
     useEffect(()=>{
         const onScroll=()=>setScrolled(window.scrollY>10)
@@ -48,7 +50,14 @@ const Navbar = () => {
                     <div className="hidden lg:flex justify-center text-white font-bold gap-3 items-center">
                         <Search className='cursor-pointer'/>
                         <UserRound className='cursor-pointer'/>
-                        <ShoppingBag className='cursor-pointer'/>
+                        <button onClick={() => setCartOpen(true)} className="relative cursor-pointer">
+                            <ShoppingBag />
+                            {itemCount > 0 && (
+                                <span className="absolute -top-2 -right-2 bg-primary text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                                    {itemCount}
+                                </span>
+                            )}
+                        </button>
                     </div>
 
                     <div className="lg:hidden md:flex flex-col justify-end">
@@ -73,7 +82,14 @@ const Navbar = () => {
                         <div className="flex mt-5 justify-between gap-4 text-white items-start ">
                             <Search className='cursor-pointer'/>
                             <UserRound className='cursor-pointer'/>
-                            <ShoppingBag className='cursor-pointer'/>
+                            <button onClick={() => setCartOpen(true)} className="relative cursor-pointer">
+                                <ShoppingBag />
+                                {itemCount > 0 && (
+                                    <span className="absolute -top-2 -right-2 bg-primary text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                                        {itemCount}
+                                    </span>
+                                )}
+                            </button>
                         </div>
                     </div>
                 }
