@@ -2,11 +2,12 @@ import { createStorefrontApiClient } from '@shopify/storefront-api-client'
 
 const client = createStorefrontApiClient({
   storeDomain: process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN,
-  apiVersion: '2024-10',
+  apiVersion: '2025-07',
   publicAccessToken: process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN,
 })
 
 // ─── Products ────────────────────────────────────────────────────────────────
+
 
 export async function getProducts() {
   const query = `{
@@ -20,9 +21,21 @@ export async function getProducts() {
           priceRange {
             minVariantPrice { amount currencyCode }
           }
-          images(first: 5) {
+          images(first: 1) {
+            edges { node { url altText width height } }
+          }
+          media(first: 1) {
             edges {
-              node { url altText width height }
+              node {
+                mediaContentType
+                ... on Video {
+                  sources { url mimeType format }
+                  previewImage { url }
+                }
+                ... on MediaImage {
+                  image { url altText width height }
+                }
+              }
             }
           }
           variants(first: 10) {
@@ -31,6 +44,7 @@ export async function getProducts() {
                 id
                 title
                 availableForSale
+                quantityAvailable
                 price { amount currencyCode }
                 selectedOptions { name value }
               }
@@ -57,9 +71,18 @@ export async function getProduct(handle) {
         priceRange {
           minVariantPrice { amount currencyCode }
         }
-        images(first: 10) {
+        media(first: 10) {
           edges {
-            node { url altText width height }
+            node {
+              mediaContentType
+              ... on Video {
+                sources { url mimeType format }
+                previewImage { url }
+              }
+              ... on MediaImage {
+                image { url altText width height }
+              }
+            }
           }
         }
         variants(first: 20) {
@@ -68,14 +91,13 @@ export async function getProduct(handle) {
               id
               title
               availableForSale
+              quantityAvailable
               price { amount currencyCode }
               selectedOptions { name value }
             }
           }
         }
-        options {
-          id name values
-        }
+        options { id name values }
       }
     }
   `
@@ -84,14 +106,34 @@ export async function getProduct(handle) {
   return data?.product ? normalizeProduct(data.product) : null
 }
 
+function normalizeMediaItem(node) {
+  if (node.mediaContentType === 'VIDEO') {
+    const mp4 = node.sources?.find(s => s.mimeType === 'video/mp4' || s.format === 'mp4') ?? node.sources?.[0]
+    return { type: 'video', videoUrl: mp4?.url ?? '', previewUrl: node.previewImage?.url ?? '' }
+  }
+  return {
+    type: 'image',
+    url: node.image?.url ?? '',
+    altText: node.image?.altText ?? '',
+    width: node.image?.width ?? 800,
+    height: node.image?.height ?? 800,
+  }
+}
+
 function normalizeProduct(node) {
+  const media = node.media?.edges?.map(({ node: m }) => normalizeMediaItem(m)) ?? []
+  const fallbackImage = node.images?.edges?.[0]?.node
+  if (media.length === 0 && fallbackImage) {
+    media.push({ type: 'image', url: fallbackImage.url, altText: fallbackImage.altText ?? '', width: fallbackImage.width ?? 800, height: fallbackImage.height ?? 800 })
+  }
   return {
     id: node.id,
     title: node.title,
     handle: node.handle,
     descriptionHtml: node.descriptionHtml,
     price: node.priceRange?.minVariantPrice,
-    images: node.images?.edges?.map(({ node: img }) => img) ?? [],
+    media,
+    images: media.filter(m => m.type === 'image'),
     variants: node.variants?.edges?.map(({ node: v }) => v) ?? [],
     options: node.options ?? [],
   }

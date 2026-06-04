@@ -66,7 +66,7 @@ async function getAdminToken() {
 }
 
 async function adminFetch(storeDomain, token, path, method = 'GET', body) {
-  const res = await fetch(`https://${storeDomain}/admin/api/2024-10${path}`, {
+  const res = await fetch(`https://${storeDomain}/admin/api/2025-07${path}`, {
     method,
     headers: {
       'Content-Type': 'application/json',

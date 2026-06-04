@@ -6,21 +6,36 @@ import { useCart } from '@/context/CartContext'
 import { ShoppingBag } from 'lucide-react'
 
 export default function ProductCard({ product }) {
-  const { addItem, loading } = useCart()
-  const image = product.images[0]
+  const { addItem, loading, getCartQty } = useCart()
+  const firstMedia = product.media?.[0]
   const firstVariant = product.variants[0]
   const available = firstVariant?.availableForSale ?? false
+  const cartQty = getCartQty(firstVariant?.id)
+  const maxQty = firstVariant?.quantityAvailable ?? Infinity
+  const canAdd = available && cartQty < maxQty
 
   const fmt = (amount, currency) =>
     new Intl.NumberFormat('en-NZ', { style: 'currency', currency: currency || 'NZD' }).format(amount)
 
   return (
-    <div className="flex flex-col group">
+    <div className="flex flex-col h-full border border-gray-300 rounded-md overflow-hidden hover:border-banner hover:shadow-md transition-all duration-300 group">
+
+      {/* Media */}
       <Link href={`/shop/${product.handle}`} className="block relative aspect-square bg-gray-50 overflow-hidden">
-        {image ? (
+        {firstMedia?.type === 'video' ? (
+          <video
+            src={firstMedia.videoUrl}
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster={firstMedia.previewUrl}
+            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        ) : firstMedia?.type === 'image' ? (
           <Image
-            src={image.url}
-            alt={image.altText || product.title}
+            src={firstMedia.url}
+            alt={firstMedia.altText || product.title}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-500"
           />
@@ -29,31 +44,53 @@ export default function ProductCard({ product }) {
             <ShoppingBag size={48} strokeWidth={1} />
           </div>
         )}
+
         {!available && (
-          <div className="absolute inset-0 bg-white/60 flex items-center justify-center">
-            <span className="text-xs font-bold uppercase tracking-widest text-gray-400">Sold Out</span>
+          <div className="absolute top-3 left-3">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-white bg-gray-400 px-2 py-1 rounded-sm">Sold Out</span>
+          </div>
+        )}
+
+        {available && (
+          <div className="absolute top-3 left-3">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-white bg-secondary px-2 py-1 rounded-sm">In Stock</span>
           </div>
         )}
       </Link>
 
-      <div className="flex flex-col gap-2 pt-4">
-        <Link href={`/shop/${product.handle}`} className="text-sm font-semibold text-banner hover:text-secondary transition line-clamp-2">
-          {product.title}
-        </Link>
-        <div className="flex items-center justify-between gap-2">
-          <span className="text-primary font-bold text-sm">
+      {/* Info */}
+      <div className="flex flex-col flex-1 gap-3 p-4 border-t border-gray-100">
+        <div className="flex flex-col gap-1 flex-1">
+          <Link
+            href={`/shop/${product.handle}`}
+            className="text-sm font-semibold text-banner hover:text-secondary transition line-clamp-2 leading-snug"
+          >
+            {product.title}
+          </Link>
+          <span className="text-primary font-bold text-base">
             {fmt(product.price?.amount, product.price?.currencyCode)}
           </span>
-          <button
-            onClick={() => available && firstVariant && addItem(firstVariant.id)}
-            disabled={!available || loading}
-            className="flex items-center gap-1.5 bg-banner text-white text-xs font-semibold px-3 py-2 hover:opacity-80 transition disabled:opacity-40 cursor-pointer disabled:cursor-not-allowed"
-          >
-            <ShoppingBag size={13} />
-            {available ? 'Add' : 'Sold Out'}
-          </button>
         </div>
+
+        {canAdd ? (
+          <button
+            onClick={() => addItem(firstVariant.id)}
+            disabled={loading}
+            className="w-full flex items-center justify-center gap-2 bg-banner text-white text-xs font-semibold py-2.5 rounded-sm hover:bg-primary transition-colors cursor-pointer disabled:opacity-50"
+          >
+            <ShoppingBag size={14} />
+            Add to Cart
+          </button>
+        ) : (
+          <button
+            disabled
+            className="w-full flex items-center justify-center gap-2 bg-gray-100 text-gray-400 text-xs font-semibold py-2.5 rounded-sm cursor-not-allowed"
+          >
+            Sold Out
+          </button>
+        )}
       </div>
+
     </div>
   )
 }

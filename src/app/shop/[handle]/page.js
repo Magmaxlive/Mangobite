@@ -11,13 +11,15 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }) {
-  const product = await getProduct(params.handle)
+  const { handle } = await params
+  const product = await getProduct(handle)
   if (!product) return {}
   return { title: `${product.title} — Mangobite` }
 }
 
 export default async function ProductPage({ params }) {
-  const product = await getProduct(params.handle)
+  const { handle } = await params
+  const product = await getProduct(handle)
   if (!product) notFound()
 
   return (

@@ -69,8 +69,12 @@ export function CartProvider({ children }) {
 
   const itemCount = cart?.lines?.reduce((sum, l) => sum + l.quantity, 0) ?? 0
 
+  const getCartQty = useCallback((variantId) => {
+    return cart?.lines?.find(l => l.variantId === variantId)?.quantity ?? 0
+  }, [cart])
+
   return (
-    <CartContext.Provider value={{ cart, cartOpen, setCartOpen, addItem, updateItem, removeItem, loading, itemCount }}>
+    <CartContext.Provider value={{ cart, cartOpen, setCartOpen, addItem, updateItem, removeItem, loading, itemCount, getCartQty }}>
       {children}
     </CartContext.Provider>
   )

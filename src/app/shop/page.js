@@ -5,7 +5,12 @@ import ProductCard from '@/components/common/ProductCard'
 export const revalidate = 60
 
 export default async function ShopPage() {
-  const products = await getProducts()
+  const raw = await getProducts()
+  const products = [...raw].sort((a, b) => {
+    const aIn = a.variants.some(v => v.availableForSale)
+    const bIn = b.variants.some(v => v.availableForSale)
+    return aIn === bIn ? 0 : aIn ? -1 : 1
+  })
 
   return (
     <div className="flex flex-col">
@@ -20,7 +25,7 @@ export default async function ShopPage() {
         {products.length === 0 ? (
           <p className="text-center text-gray-400 py-20">No products available right now.</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 tablet:grid-cols-3 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 tablet:grid-cols-3 lg:grid-cols-4 gap-8 items-stretch">
             {products.map(product => (
               <ProductCard key={product.id} product={product} />
             ))}
