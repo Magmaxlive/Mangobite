@@ -18,7 +18,7 @@ export default function ProductCard({ product }) {
     new Intl.NumberFormat('en-NZ', { style: 'currency', currency: currency || 'NZD' }).format(amount)
 
   return (
-    <div className="flex flex-col h-full border border-gray-300 rounded-md overflow-hidden hover:border-banner hover:shadow-md transition-all duration-300 group">
+    <div className="flex flex-col h-full border border-gray-100 rounded-2xl shadow-[0_1.2rem_3rem_rgba(0,0,0,0.22)] overflow-hidden hover:border-primary/50 hover:shadow-md transition-all duration-300 group">
 
       {/* Media */}
       <Link href={`/shop/${product.handle}`} className="block relative aspect-square bg-gray-50 overflow-hidden">

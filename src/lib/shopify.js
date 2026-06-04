@@ -274,6 +274,82 @@ function normalizeCart(cart) {
   }
 }
 
+// ─── Blogs ────────────────────────────────────────────────────────────────────
+
+export async function getArticles() {
+  const query = `{
+    articles(first: 50, sortKey: PUBLISHED_AT, reverse: true) {
+      edges {
+        node {
+          id
+          title
+          handle
+          excerpt
+          publishedAt
+          image { url altText width height }
+          author { name }
+          blog { handle title }
+          tags
+        }
+      }
+    }
+  }`
+  const { data, errors } = await client.request(query)
+  if (errors) { console.error('getArticles error:', errors); return [] }
+  return data?.articles?.edges?.map(({ node }) => node) ?? []
+}
+
+export async function getArticle(blogHandle, articleHandle) {
+  const query = `
+    query GetArticle($blogHandle: String!, $articleHandle: String!) {
+      blog(handle: $blogHandle) {
+        articleByHandle(handle: $articleHandle) {
+          id
+          title
+          handle
+          contentHtml
+          excerpt
+          publishedAt
+          image { url altText width height }
+          author { name }
+          tags
+        }
+      }
+    }
+  `
+  const { data, errors } = await client.request(query, { variables: { blogHandle, articleHandle } })
+  if (errors) { console.error('getArticle error:', errors); return null }
+  return data?.blog?.articleByHandle ?? null
+}
+
+export async function searchProducts(query) {
+  if (!query?.trim()) return []
+  const gql = `
+    query PredictiveSearch($query: String!) {
+      predictiveSearch(query: $query, types: [PRODUCT], limit: 8) {
+        products {
+          id
+          title
+          handle
+          priceRange { minVariantPrice { amount currencyCode } }
+          images(first: 1) { edges { node { url altText } } }
+          variants(first: 1) { edges { node { availableForSale } } }
+        }
+      }
+    }
+  `
+  const { data, errors } = await client.request(gql, { variables: { query } })
+  if (errors) { console.error('searchProducts error:', errors); return [] }
+  return (data?.predictiveSearch?.products ?? []).map(p => ({
+    id: p.id,
+    title: p.title,
+    handle: p.handle,
+    price: p.priceRange?.minVariantPrice,
+    image: p.images?.edges?.[0]?.node,
+    available: p.variants?.edges?.[0]?.node?.availableForSale ?? false,
+  }))
+}
+
 export async function getGalleryImages() {
   const query = `{
     metaobjects(type: "gallery", first: 50) {

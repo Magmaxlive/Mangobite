@@ -7,7 +7,7 @@ export default function page() {
   return (
     <div className='flex flex-col [overflow-x:clip]'>
         <PageBanner
-            minorTitle="mango bites"
+            minorTitle="mango bite"
             title="health bites"
             description='Go tropical. Fuel your day with the sweet power of mango.'
             breadCrumbs={[

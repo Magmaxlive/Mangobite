@@ -10,8 +10,9 @@ export default function Footer() {
         { title: 'Mango Story', href: '/mango-story' },
         { title: 'Mango Journey', href: '/mango-journey' },
         { title: 'Contact us', href: '/contact' },
+        { title : 'Disclaimer', href: '/disclaimer' },
         { title: 'refund policy', href: '/refund-policy' },
-        { title: 'blogs', href: '/blogs' },
+        { title: 'blogs', href: '/blog' },
     ];
   return (
     <div className='px-8 pt-10 pb-20 mt-8' style={{ backgroundImage: `url(/images/footer_w.png)` , backgroundSize: 'cover', backgroundPosition: 'top' }}>

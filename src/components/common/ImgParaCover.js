@@ -24,7 +24,7 @@ export default function ImageParaCoverSection({image,firstPara,reverse,alt}) {
                     </div>
                 </div>
             </div>
-            <p className={`text-gray-700 text-base leading-relaxed max-w-xs tablet:max-w-md ${reverse ? 'md:order-1' : 'md:order-2'}`}>
+            <p className={`text-gray-700 text-base leading-relaxed max-w-md tablet:max-w-md ${reverse ? 'md:order-1' : 'md:order-2'}`}>
                 {firstPara}
             </p>
         </div>

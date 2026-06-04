@@ -2,7 +2,7 @@ import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-export default function PageBanner({ title,minorTitle, bannerBg, Textclass,description, breadCrumbs = [] }) {
+export default function PageBanner({ title,minorTitle,size, bannerBg, Textclass,description, breadCrumbs = [] }) {
   return (
     <div
       className={`relative pt-30 pb-18 tablet:pt-30 pb-18 px-8 bg-banner ${bannerBg || 'bg-banner'} bg-cover bg-no-repeat bg-center overflow-hidden`}
@@ -28,7 +28,7 @@ export default function PageBanner({ title,minorTitle, bannerBg, Textclass,descr
         <h5 className="uppercase text-grayText text-xs tracking-widest">
             {minorTitle}
         </h5>
-        <h1 className={`text-4xl lg:text-6xl font-black capitalize max-w-xl text-white leading-tight ${Textclass || 'uppercase'}`}>
+        <h1 className={` font-black capitalize text-white leading-tight ${Textclass || 'uppercase'} ${size || 'max-w-xl text-4xl lg:text-6xl'}`}>
           {title}
         </h1>
 

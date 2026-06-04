@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { Search,UserRound,ShoppingBag } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
+import SearchModal from '@/components/common/SearchModal';
 
 
 const Navbar = () => {
@@ -15,6 +16,8 @@ const Navbar = () => {
     const [scrolled,setScrolled]=useState(false)
     const pathname=usePathname()
     const { setCartOpen, itemCount } = useCart()
+    const [searchOpen, setSearchOpen] = useState(false)
+    const accountUrl = `https://${process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN}/account`
 
     useEffect(()=>{
         const onScroll=()=>setScrolled(window.scrollY>10)
@@ -27,6 +30,7 @@ const Navbar = () => {
     }
   return (
     <>
+        <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
         <nav className={`fixed top-0 left-0 w-full z-50 py-4 border-neutral-900 transition-colors duration-300 ${scrolled ? 'bg-banner' : 'bg-transparent'}`}>
             <div className="container px-8 mx-auto relative text-sm max-w-7xl">
                 <div className="flex justify-between items-center">
@@ -48,8 +52,8 @@ const Navbar = () => {
                     </ul>
 
                     <div className="hidden lg:flex justify-center text-white font-bold gap-3 items-center">
-                        <Search className='cursor-pointer'/>
-                        <UserRound className='cursor-pointer'/>
+                        <button onClick={() => setSearchOpen(true)} className="cursor-pointer"><Search /></button>
+                        <a href={accountUrl} target="_blank" rel="noreferrer" className="cursor-pointer"><UserRound /></a>
                         <button onClick={() => setCartOpen(true)} className="relative cursor-pointer">
                             <ShoppingBag />
                             {itemCount > 0 && (
@@ -72,7 +76,7 @@ const Navbar = () => {
                         <ul className='flex flex-col gap-3'>
                         {headerMenu.map((item) => (
                             <li key={item.title}>
-                                <Link href={item.link} className={`cursor-pointer uppercase font-bold hover:text-secondary text-primary ${pathname === item.link ? 'text-secondary' : 'text-primary'}`}>
+                                <Link href={item.link} onClick={() => setDrawerOpen(false)} className={`cursor-pointer uppercase font-bold hover:text-secondary text-primary ${pathname === item.link ? 'text-secondary' : 'text-primary'}`}>
                                     {item.title}
                                 </Link>
                             </li>
@@ -80,8 +84,8 @@ const Navbar = () => {
                         </ul>
 
                         <div className="flex mt-5 justify-between gap-4 text-white items-start ">
-                            <Search className='cursor-pointer'/>
-                            <UserRound className='cursor-pointer'/>
+                            <button onClick={() => { setSearchOpen(true); setDrawerOpen(false) }} className="cursor-pointer"><Search /></button>
+                            <a href={accountUrl} target="_blank" rel="noreferrer" onClick={() => setDrawerOpen(false)} className="cursor-pointer"><UserRound /></a>
                             <button onClick={() => setCartOpen(true)} className="relative cursor-pointer">
                                 <ShoppingBag />
                                 {itemCount > 0 && (
