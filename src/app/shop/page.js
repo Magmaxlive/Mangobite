@@ -32,6 +32,8 @@ export default async function ShopPage() {
           </div>
         )}
       </div>
+
+      
     </div>
   )
 }

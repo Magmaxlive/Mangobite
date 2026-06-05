@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image';
+import SectionHeading from './SectionHeading';
 
 export default function Cards() {
     const features = [
@@ -23,7 +24,8 @@ export default function Cards() {
   },
 ];
   return (
-    <div className='py-12 px-8'>
+    <div className='flex flex-col gap-12 py-12 px-8'>
+      <SectionHeading mainHeading='why mangobite' minorHeading='shop with us' />
         <div className="grid grid-cols-1 md:grid-cols-2 tablet:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {features.map((i,index)=>(
                 <div key={index} className="flex flex-col gap-6 justify-center items-center p-8 bg-gray-200 rounded-md">

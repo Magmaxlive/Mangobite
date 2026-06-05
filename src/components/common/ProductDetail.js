@@ -32,7 +32,7 @@ export default function ProductDetail({ product }) {
   }
 
   return (
-    <div className="py-12 px-8 max-w-7xl mx-auto w-full">
+    <div className="pt-12 pb-8 px-8 max-w-7xl mx-auto w-full">
 
       {/* Back */}
       <Link href="/shop" className="inline-flex items-center gap-1 text-sm text-gray-400 hover:text-banner transition mb-8">
@@ -122,10 +122,16 @@ export default function ProductDetail({ product }) {
           {/* Title & price */}
           <div className="flex flex-col gap-2 pb-6 border-b border-gray-100">
             <h1 className="text-3xl font-black text-banner capitalize leading-tight">{product.title}</h1>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 flex-wrap">
               <span className="text-2xl font-bold text-primary">
                 {fmt(selectedVariant?.price?.amount ?? product.price?.amount, selectedVariant?.price?.currencyCode ?? product.price?.currencyCode)}
               </span>
+              {selectedVariant?.compareAtPrice?.amount &&
+                parseFloat(selectedVariant.compareAtPrice.amount) > parseFloat(selectedVariant.price?.amount) && (
+                <span className="text-red-400 text-lg line-through">
+                  {fmt(selectedVariant.compareAtPrice.amount, selectedVariant.compareAtPrice.currencyCode)}
+                </span>
+              )}
               <span className={`text-xs font-semibold px-2 py-1 rounded-full ${available ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
                 {available ? 'In Stock' : 'Sold Out'}
               </span>

@@ -2,6 +2,8 @@ import { getProduct, getProducts } from '@/lib/shopify'
 import { notFound } from 'next/navigation'
 import PageBanner from '@/components/common/PageBanner'
 import ProductDetail from '@/components/common/ProductDetail'
+import Cards from '@/components/common/Cards'
+import SectionHeading from '@/components/common/SectionHeading'
 
 export const revalidate = 60
 
@@ -31,6 +33,10 @@ export default async function ProductPage({ params }) {
         breadCrumbs={[{ label: 'shop', href: '/shop' }, { label: product.title }]}
       />
       <ProductDetail product={product} />
+
+      <div className="max-w-7xl mx-auto">
+        <Cards/>
+      </div>
     </div>
   )
 }

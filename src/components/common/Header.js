@@ -34,12 +34,12 @@ const Navbar = () => {
         <nav className={`fixed top-0 left-0 w-full z-50 py-4 border-neutral-900 transition-colors duration-300 ${scrolled ? 'bg-banner' : 'bg-transparent'}`}>
             <div className="container px-8 mx-auto relative text-sm max-w-7xl">
                 <div className="flex justify-between items-center">
-                    <div className="flex items-center flex-shrik-0">
+                    <Link href='/' className="flex items-center flex-shrik-0">
                         <Image src="/images/mango_logo.png"
                             alt="Mangobite"
                             width={100}
                             height={100} className='h-18 lg:w-full'/>
-                    </div>
+                    </Link>
 
                     <ul className='hidden font-bold uppercase lg:flex  space-x-12'>
                         {headerMenu.map((item) => (

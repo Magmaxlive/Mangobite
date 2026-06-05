@@ -67,9 +67,17 @@ export default function ProductCard({ product }) {
           >
             {product.title}
           </Link>
-          <span className="text-primary font-bold text-base">
-            {fmt(product.price?.amount, product.price?.currencyCode)}
-          </span>
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-primary font-bold text-base">
+              {fmt(firstVariant?.price?.amount ?? product.price?.amount, firstVariant?.price?.currencyCode ?? product.price?.currencyCode)}
+            </span>
+            {firstVariant?.compareAtPrice?.amount &&
+              parseFloat(firstVariant.compareAtPrice.amount) > parseFloat(firstVariant.price?.amount) && (
+              <span className="text-red-400 text-sm line-through">
+                {fmt(firstVariant.compareAtPrice.amount, firstVariant.compareAtPrice.currencyCode)}
+              </span>
+            )}
+          </div>
         </div>
 
         {canAdd ? (
