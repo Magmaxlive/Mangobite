@@ -76,7 +76,7 @@ export default async function Home() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-7xl mx-auto place-items-center">
 
           <div className="relative w-full min-h-[400px] md:min-h-[500px]">
-            <Image fill alt='mango image' src='/images/category.png' className="object-contain" />
+            <Image fill alt='mango image' src='/images/image-mang.png' className="object-contain" />
             
           </div>
 
