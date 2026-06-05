@@ -30,7 +30,6 @@
 /* Entering slide sits on top of leaving slide */
 .slideEntering {
   z-index: 3;
-  pointer-events: none;
 }
 
 /* ── Slide transition keyframes ──
