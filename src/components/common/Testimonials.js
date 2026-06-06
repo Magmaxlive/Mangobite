@@ -32,7 +32,7 @@ export default function Testimonials() {
         <SectionHeading mainHeading='testimonials' minorHeading='what our clients say' />
         <div className="grid grid-cols-1 md:grid-cols-2 tablet:grid-cols-3 gap-8">
             {testimonials.map((i,index)=>(
-                <div key={index} className="flex flex-col gap-4 p-6 rounded-md bg-gray-200 justify-between">
+                <div key={index} className="flex flex-col gap-4 p-6 border-2 border-white hover:border-2 hover:border-primary rounded-md bg-gray-200 justify-between">
                     <p className="text-sm text-banner">
                         {i.review}
                     </p>

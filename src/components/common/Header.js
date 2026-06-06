@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Image from "next/image";
 import {Menu,X} from 'lucide-react'
 import headerMenu from '../../data/headerMenu';
@@ -18,11 +18,20 @@ const Navbar = () => {
     const { setCartOpen, itemCount } = useCart()
     const [searchOpen, setSearchOpen] = useState(false)
     const accountUrl = `https://${process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN}/account`
+    const pollRef = useRef(null)
 
     useEffect(()=>{
-        const onScroll=()=>setScrolled(window.scrollY>10)
-        window.addEventListener('scroll',onScroll)
-        return ()=>window.removeEventListener('scroll',onScroll)
+        const check = () => setScrolled(window.scrollY > 10)
+        const start = () => {
+            check()
+            clearInterval(pollRef.current)
+            pollRef.current = setInterval(check, 200)
+        }
+        start()
+        // Not removed in cleanup — survives bfcache pagehide so it can
+        // restart polling when the page is restored (pageshow with persisted=true).
+        window.addEventListener('pageshow', start)
+        return () => clearInterval(pollRef.current)
     },[])
 
     const toggleNavbar=()=>{

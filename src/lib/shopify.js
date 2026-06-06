@@ -4,6 +4,7 @@ const client = createStorefrontApiClient({
   storeDomain: process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN,
   apiVersion: '2025-07',
   publicAccessToken: process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN,
+  customFetchApi: (url, init) => fetch(url, { ...init, cache: 'no-store' }),
 })
 
 // ─── Products ────────────────────────────────────────────────────────────────
@@ -141,6 +142,22 @@ function normalizeProduct(node) {
   }
 }
 
+export async function getVariantAvailability(variantId) {
+  const query = `
+    query GetVariant($id: ID!) {
+      node(id: $id) {
+        ... on ProductVariant {
+          availableForSale
+          quantityAvailable
+        }
+      }
+    }
+  `
+  const { data, errors } = await client.request(query, { variables: { id: variantId } })
+  if (errors) return null
+  return data?.node ?? null
+}
+
 // ─── Cart ─────────────────────────────────────────────────────────────────────
 
 export async function createCart() {
@@ -189,13 +206,17 @@ export async function addToCart(cartId, lines) {
           lines(first: 100) { edges { node { ...LineFields } } }
           cost { totalAmount { amount currencyCode } }
         }
+        userErrors { field message }
       }
     }
     ${LINE_FRAGMENT}
   `
   const { data, errors } = await client.request(mutation, { variables: { cartId, lines } })
-  if (errors) { console.error('addToCart error:', errors); return null }
-  return normalizeCart(data?.cartLinesAdd?.cart)
+  if (errors) { console.error('addToCart error:', errors); return { cart: null, userErrors: [] } }
+  return {
+    cart: normalizeCart(data?.cartLinesAdd?.cart),
+    userErrors: data?.cartLinesAdd?.userErrors ?? [],
+  }
 }
 
 export async function updateCartLine(cartId, lines) {
@@ -260,7 +281,7 @@ function normalizeCart(cart) {
   return {
     id: cart.id,
     checkoutUrl: cart.checkoutUrl,
-    lines: cart.lines?.edges?.map(({ node }) => ({
+    lines: cart.lines?.edges?.filter(({ node }) => node.quantity > 0).map(({ node }) => ({
       id: node.id,
       quantity: node.quantity,
       variantId: node.merchandise?.id,

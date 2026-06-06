@@ -7,8 +7,8 @@ export default function ImageCard({items}) {
         {items.map((i,index)=>(
 
             <div key={index} className="flex flex-col justify-center items-center gap-8">
-                <div className="bg-accent p-8 rounded-full">
-                    <Image src={i.image} alt="Image" width={103} height={103} className={`w-30 h-30 object-contain`}/>
+                <div className="border-2 border-primary p-6 rounded-full">
+                    <Image src={i.image} alt="Image" width={90} height={90} className={`w-20 h-20 object-contain`}/>
                 </div>
                 <h3 className="font-bold text-base capitalize">{i.title}</h3>
             </div>

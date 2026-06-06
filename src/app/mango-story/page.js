@@ -38,24 +38,26 @@ export default async function page() {
         },
     ]
   return (
-    <div className='flex flex-col gap-10'>
+    <div className='flex flex-col gap-12'>
         
         <div className="flex flex-col">
-            <PageBanner title="Grab Your Snack Time Essential  - Mango Bite !" 
-            minorTitle='my mango story' 
+            <PageBanner description="Grab Your Snack Time Essential  - Mango Bite !" 
+            minorTitle='mango bite' 
+            title='My mango story'
             Textclass='capitalize'
                 breadCrumbs={[
                     
                     { label: 'Mango Story' }
                 ]}
-                bannerBg='bg-black'
+                
             />
 
-         <div className="bg-black">
+         {/* <div className="bg-black">
             <div className="max-w-7xl mx-auto py-10 px-4 flex justify-center items-center">
                 <Image src="/images/image-mang.png" alt="Mango Story" width={500} height={500} className='w-64 md:w-80 lg:w-[500px] object-contain drop-shadow-2xl animate-float'/>
             </div>
-         </div>
+         </div> */}
+
         </div>
 
          <div className="bg-white flex flex-col gap-12 pb-10 px-8">

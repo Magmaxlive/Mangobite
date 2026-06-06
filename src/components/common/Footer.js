@@ -9,13 +9,14 @@ export default function Footer() {
         { title: 'Home', href: '/' },
         { title: 'Mango Story', href: '/mango-story' },
         { title: 'Mango Journey', href: '/mango-journey' },
+        { title: 'Mangopedia', href: '/mangopedia' },
         { title: 'Contact us', href: '/contact' },
+        { title: 'blogs', href: '/blog' },
         { title : 'Disclaimer', href: '/disclaimer' },
         { title: 'refund policy', href: '/refund-policy' },
-        { title: 'blogs', href: '/blog' },
     ];
   return (
-    <div className='px-8 pt-10 pb-20 mt-8' style={{ backgroundImage: `url(/images/footer_w.png)` , backgroundSize: 'cover', backgroundPosition: 'top' }}>
+    <div className='px-8 pt-10 pb-30 mt-8' style={{ backgroundImage: `url(/images/footer_w.png)` , backgroundSize: 'cover', backgroundPosition: 'top' }}>
         <div className="flex justify-evenly items-start flex-wrap max-w-5xl mx-auto gap-10">
 
             <div className="flex items-center">
@@ -26,7 +27,7 @@ export default function Footer() {
                     className='h-20 w-auto'/>
             </div>
 
-            <div className="flex flex-col gap-3 text-center uppercase text-sm font-semibold tablet:border-x-2 tablet:border-primary px-18">
+            <div className="flex flex-col gap-3 text-center uppercase text-sm font-medium tablet:border-x-2 tablet:border-primary px-18">
                 {links.map((link, index) => (
                     <Link key={index} href={link.href} className='hover:text-secondary text-black cursor-pointer'>{link.title}</Link>
                 ))}

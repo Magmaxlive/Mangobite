@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCart } from '@/context/CartContext'
@@ -7,9 +8,11 @@ import { ShoppingBag } from 'lucide-react'
 
 export default function ProductCard({ product }) {
   const { addItem, loading, getCartQty } = useCart()
+  const [addError, setAddError] = useState(null)
+  const [localAvailable, setLocalAvailable] = useState(null)
   const firstMedia = product.media?.[0]
   const firstVariant = product.variants[0]
-  const available = firstVariant?.availableForSale ?? false
+  const available = localAvailable ?? (firstVariant?.availableForSale ?? false)
   const cartQty = getCartQty(firstVariant?.id)
   const maxQty = firstVariant?.quantityAvailable ?? Infinity
   const canAdd = available && cartQty < maxQty
@@ -18,7 +21,7 @@ export default function ProductCard({ product }) {
     new Intl.NumberFormat('en-NZ', { style: 'currency', currency: currency || 'NZD' }).format(amount)
 
   return (
-    <div className="flex flex-col h-full border border-gray-100 rounded-2xl shadow-[0_1.2rem_3rem_rgba(0,0,0,0.22)] overflow-hidden hover:border-primary/50 hover:shadow-md transition-all duration-300 group">
+    <div className="flex flex-col h-full border border-gray-100 rounded-2xl shadow-[0_1.2rem_3rem_rgba(0,0,0,0.22)] overflow-hidden hover:border-primary hover:border-2 hover:shadow-md transition-all duration-300 group">
 
       {/* Media */}
       <Link href={`/shop/${product.handle}`} className="block relative aspect-square bg-gray-50 overflow-hidden">
@@ -82,7 +85,11 @@ export default function ProductCard({ product }) {
 
         {canAdd ? (
           <button
-            onClick={() => addItem(firstVariant.id)}
+            onClick={async () => {
+              setAddError(null)
+              const err = await addItem(firstVariant.id)
+              if (err) { setAddError(err); setLocalAvailable(false) }
+            }}
             disabled={loading}
             className="w-full flex items-center justify-center gap-2 bg-banner text-white text-xs font-semibold py-2.5 rounded-sm hover:bg-primary transition-colors cursor-pointer disabled:opacity-50"
           >
@@ -96,6 +103,9 @@ export default function ProductCard({ product }) {
           >
             Sold Out
           </button>
+        )}
+        {addError && (
+          <p className="text-red-500 text-xs text-center mt-1">{addError}</p>
         )}
       </div>
 

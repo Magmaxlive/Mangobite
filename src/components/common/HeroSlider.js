@@ -89,6 +89,19 @@ export default function HeroSlider() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     startAuto()
+    function onPageShow(e) {
+      if (!e.persisted) return
+      startAuto()
+      // Re-trigger entry animation — bfcache can freeze CSS animations mid-opacity
+      const el = contentRefs.current[currentRef.current]
+      if (el) {
+        el.classList.remove(styles.contentActive)
+        void el.offsetWidth
+        el.classList.add(styles.contentActive)
+      }
+    }
+    // Not removed in cleanup so it survives bfcache pagehide/pageshow cycle
+    window.addEventListener('pageshow', onPageShow)
     return () => { stopAuto(); clearTimeout(clearPrevRef.current) }
   }, [])
 

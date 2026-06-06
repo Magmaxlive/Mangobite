@@ -1,3 +1,5 @@
+export const revalidate = 0
+
 import HeroSlider from '@/components/common/HeroSlider'
 import SectionHeading from '@/components/common/SectionHeading'
 import { getProducts } from '@/lib/shopify'
@@ -55,8 +57,8 @@ export default async function Home() {
             <h6 className="font-medium text-banner uppercase tablet:text-sm text-xs">
               Welcome to Mango Bite - Top Mango Exporter
             </h6>
-            <h2 className="font-black lg:text-5xl tablet:text-4xl text-3xl font-nunito text-secondary ">
-              Buy Fresh Mangoes !
+            <h2 className="font-bold lg:text-5xl tablet:text-4xl text-3xl text-secondary ">
+              Buy Fresh Mangoes
             </h2>
             <p className="text-sm max-w-md font-normal leading-loose text-center text-gray-800">
               Your ultimate destination for premium New Zealand mangoes available online! Explore our diverse range of fresh mangoes, including popular varieties like Banganapalli (Benishan), Alphonso (King of Mangoes), Kesar, Dasheri, Langra, Chaunsa, Rajapuri, Totapuri, and more. With convenient mango delivery straight to your doorstep, you can enjoy the delicious taste and health benefits of mangoes from the comfort of your home. 
@@ -76,7 +78,7 @@ export default async function Home() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-7xl mx-auto place-items-center">
 
           <div className="relative w-full min-h-[400px] md:min-h-[500px]">
-            <Image fill alt='mango image' src='/images/image-mang.png' className="object-contain" />
+            <Image fill alt='mango image' src='/images/image-mang.png' className="object-contain animate-float" />
             
           </div>
 

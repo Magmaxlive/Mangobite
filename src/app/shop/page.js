@@ -2,7 +2,7 @@ import { getProducts } from '@/lib/shopify'
 import PageBanner from '@/components/common/PageBanner'
 import ProductCard from '@/components/common/ProductCard'
 
-export const revalidate = 60
+export const revalidate = 0
 
 export default async function ShopPage() {
   const raw = await getProducts()

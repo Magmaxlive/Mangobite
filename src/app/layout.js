@@ -34,6 +34,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${poppins.variable} ${acme.variable} ${nunito.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">

@@ -42,7 +42,7 @@ export default function MangoInfo({ title, details }) {
                 key={key}
                 onClick={() => setActive(key)}
                 className={`flex flex-col flex-shrink-0 items-center gap-3 px-4 pt-4 pb-3 rounded-2xl w-[140px] transition-colors duration-200 cursor-pointer ${
-                  isActive ? 'bg-secondary' : 'bg-mangoYellow'
+                  isActive ? 'bg-secondary' : 'border-2 border-primary'
                 }`}
               >
                 <div className="w-20 h-20 rounded-full bg-mangoBg flex items-center justify-center overflow-hidden p-3">
@@ -66,8 +66,8 @@ export default function MangoInfo({ title, details }) {
       </div>
 
       {/* Content */}
-      <div className="bg-[#f5f0e8] rounded-2xl px-6 py-5 min-h-14 w-full">
-        <div className="text-gray-700 text-sm leading-relaxed">
+      <div className="bg-[#f5f0e8] border border-gray-200 rounded-2xl px-6 py-5 min-h-14 w-full">
+        <div className="text-banner text-sm leading-relaxed">
           {details?.[active] ?? '—'}
         </div>
       </div>

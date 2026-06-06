@@ -49,7 +49,7 @@ export default function page() {
         <div className="flex flex-col">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto gap-8 py-15 px-8">
 
-                <div className="flex flex-col gap-8 border-2 border-gray-200 rounded-md shadow-2xl  p-12">
+                <div className="flex flex-col gap-8 border-2 border-primary rounded-md shadow-2xl  p-12">
                     <h4 className="text-center font-bold capitalize text-3xl text-banner">Location</h4>
                     <div className="flex justify-start items-center gap-4">
                         <div className="bg-accent p-3 rounded-full">
@@ -64,7 +64,7 @@ export default function page() {
                     </div>
                 </div>
 
-                <div className="flex flex-col gap-8 border-2 border-gray-200 rounded-md shadow-2xl  p-12">
+                <div className="flex flex-col gap-8 border-2 border-primary rounded-md shadow-2xl  p-12">
                     <h4 className="text-center font-bold capitalize text-3xl text-banner">Reach us</h4>
                     <div className="flex flex-col gap-4 ">
 
@@ -83,7 +83,7 @@ export default function page() {
                     </div>
                 </div>
 
-                <div className="flex flex-col gap-8 border-2 border-gray-200 rounded-md shadow-2xl  p-12">
+                <div className="flex flex-col gap-8 border-2 border-primary rounded-md shadow-2xl  p-12">
                     <h4 className="text-center font-bold capitalize text-3xl text-banner">Follow Us</h4>
                     <div className="flex flex-col gap-4">
 

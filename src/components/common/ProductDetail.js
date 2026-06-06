@@ -12,12 +12,14 @@ export default function ProductDetail({ product }) {
   const [mediaIndex, setMediaIndex] = useState(0)
   const [qty, setQty] = useState(1)
   const [added, setAdded] = useState(false)
+  const [addError, setAddError] = useState(null)
+  const [localAvailable, setLocalAvailable] = useState(null)
 
   const fmt = (amount, currency) =>
     new Intl.NumberFormat('en-NZ', { style: 'currency', currency: currency || 'NZD' }).format(amount)
 
   const allMedia = product.media ?? []
-  const available = selectedVariant?.availableForSale ?? false
+  const available = localAvailable ?? (selectedVariant?.availableForSale ?? false)
   const cartQty = getCartQty(selectedVariant?.id)
   const maxQty = selectedVariant?.quantityAvailable ?? Infinity
   const canAdd = available && cartQty < maxQty
@@ -26,7 +28,9 @@ export default function ProductDetail({ product }) {
 
   const handleAddToCart = async () => {
     if (!canAdd || !selectedVariant) return
-    await addItem(selectedVariant.id, qty)
+    setAddError(null)
+    const err = await addItem(selectedVariant.id, qty)
+    if (err) { setAddError(err); setLocalAvailable(false); return }
     setAdded(true)
     setTimeout(() => setAdded(false), 2000)
   }
@@ -200,6 +204,10 @@ export default function ProductDetail({ product }) {
             {added ? <Check size={18} /> : <ShoppingBag size={18} />}
             {added ? 'Added to Cart!' : canAdd ? 'Add to Cart' : 'Sold Out'}
           </button>
+
+          {addError && (
+            <p className="text-red-500 text-sm text-center -mt-2">{addError}</p>
+          )}
 
           {/* Description */}
           {product.descriptionHtml && (
