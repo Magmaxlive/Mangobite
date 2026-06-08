@@ -29,3 +29,19 @@ body {
 .animate-float {
   animation: float 3.5s ease-in-out infinite;
 }
+
+/* Remove pulse animation from WhatsApp button */
+.styles-module_whatsappButton__tVits::after {
+  animation: none !important;
+}
+
+@keyframes shopPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(255,147,8,0.8), 0 6px 20px rgba(255,147,8,0.5); transform: scale(1); }
+  50%  { transform: scale(1.06); }
+  70%  { box-shadow: 0 0 0 22px rgba(255,147,8,0), 0 6px 20px rgba(255,147,8,0.3); transform: scale(1); }
+  100% { box-shadow: 0 0 0 0 rgba(255,147,8,0), 0 6px 20px rgba(255,147,8,0.5); transform: scale(1); }
+}
+
+.shop-now-pulse {
+  animation: shopPulse 1.4s infinite;
+}

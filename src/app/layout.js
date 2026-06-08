@@ -4,6 +4,7 @@ import Header from "../components/common/Header";
 import Footer from "@/components/common/Footer";
 import { CartProvider } from "@/context/CartContext";
 import CartDrawer from "@/components/common/CartDrawer";
+import WhatsApp from "@/components/common/WhatsApp";
 
 
 const acme = Acme({
@@ -42,6 +43,7 @@ export default function RootLayout({ children }) {
           <Header/>
           <CartDrawer/>
           {children}
+          <WhatsApp/>
           <Footer/>
         </CartProvider>
       </body>
