@@ -5,7 +5,7 @@ import Image from 'next/image';
 export default function PageBanner({ title,minorTitle,size, bannerBg, Textclass,description, breadCrumbs = [] }) {
   return (
     <div
-      className={`relative pt-30 pb-18 tablet:pt-30 pb-18 px-8 bg-banner ${bannerBg || 'bg-banner'} bg-cover bg-no-repeat bg-center overflow-hidden`}
+      className={`relative pt-38 pb-18 tablet:pt-38 pb-18 px-8 bg-banner ${bannerBg || 'bg-banner'} bg-cover bg-no-repeat bg-center overflow-hidden`}
     >
       <Image
         src="/images/leaf_left.png"

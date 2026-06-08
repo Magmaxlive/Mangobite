@@ -44,7 +44,7 @@ export default async function page() {
             <PageBanner description="Grab Your Snack Time Essential  - Mango Bite !" 
             minorTitle='mango bite' 
             title='My mango story'
-            Textclass='capitalize'
+           
                 breadCrumbs={[
                     
                     { label: 'Mango Story' }
@@ -62,7 +62,7 @@ export default async function page() {
 
          <div className="bg-white flex flex-col gap-12 pb-10 px-8">
             <div className="flex flex-col gap-12 max-w-7xl mx-auto">
-                <SectionHeading mainHeading="My Mango Story" />
+                <SectionHeading mainHeading="my mango story" />
                 <ImageParaSection image='/images/mangoboy.jpg'
                 firstPara='Let me introduce myself; my name is Nirmal, and when I was a kid, mangoes were not just a fruit but a gateway to a world of stories and cherished memories. The sweet and luscious taste of mangoes always reminds me of carefree days, filled with laughter and adventure.'
                 secondPara='Driven by nostalgia and a desire to share love and taste with the rest of the world, I set out on a journey to create Mangobite. In 2016, the idea was just a fantasy, but its ultimate goal was to become a hub for fresh produce and services from all over the world. I’ll never forget that first Sunday, when my family and I set up a cute mango stall at the Avondale Farmers Market. Although we did not have high hopes, the overwhelming demand from customers ultimately reinforced our faith. Thus, Mangobite was born.' 

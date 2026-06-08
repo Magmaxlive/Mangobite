@@ -9,6 +9,7 @@ import { Search,UserRound,ShoppingBag } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import SearchModal from '@/components/common/SearchModal';
+import { FaFacebook,FaInstagram,FaPhoneAlt  } from "react-icons/fa";
 
 
 const Navbar = () => {
@@ -40,8 +41,27 @@ const Navbar = () => {
   return (
     <>
         <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
-        <nav className={`fixed top-0 left-0 w-full z-50 py-4 border-neutral-900 transition-colors duration-300 ${scrolled ? 'bg-banner' : 'bg-transparent'}`}>
-            <div className="container px-8 mx-auto relative text-sm max-w-7xl">
+        <nav className={`fixed top-0 left-0 flex flex-col w-full z-50 border-neutral-900 transition-colors duration-300 ${scrolled ? 'bg-banner' : 'bg-transparent'}`}>
+            <div className={`bg-primary/70  overflow-hidden transition-all duration-300 ${scrolled ? 'max-h-0 opacity-0' : 'max-h-16 opacity-100'}`}>
+                <div className="flex justify-between py-2 px-8 max-w-7xl mx-auto">
+
+                    <Link className="text-white flex hover:underline underline-offset-4 items-center gap-2" href="tel:0277224561">
+                            <FaPhoneAlt size={18} />
+                            <span className="text-sm">02772-24561</span>
+                    </Link>
+
+                    <div className="flex gap-3">
+                        <Link href="https://www.facebook.com/mangobitenz" className='text-white hover:underline underline-offset-4' target="_blank" rel="noopener noreferrer">
+                            <FaFacebook size={20} />
+                        </Link>
+                        <Link href="https://www.instagram.com/mangobitenz" className='text-white hover:underline underline-offset-4' target="_blank" rel="noopener noreferrer">
+                            <FaInstagram size={20} />
+                        </Link>
+                    </div>
+
+                </div>
+            </div>
+            <div className="container py-4 px-8 mx-auto relative text-sm max-w-7xl">
                 <div className="flex justify-between items-center">
                     <Link href='/' className="flex items-center flex-shrik-0">
                         <Image src="/images/mango_logo.png"

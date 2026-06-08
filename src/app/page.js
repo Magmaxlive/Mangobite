@@ -82,7 +82,7 @@ export default async function Home() {
             
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 w-full">
             <h3 className="text-secondary font-bold tablet:text-4xl text-2xl md:text-start text-center">
               Gift Your Employees
             </h3>
@@ -131,11 +131,11 @@ export default async function Home() {
                                   <h6 className="text-center text-white text-xs font-semibold uppercase">
                                       mango bite
                                   </h6>
-                                  <h2 className="text-center text-3xl tablet:text-5xl max-w-xl leading-tight font-bold text-pretty capitalize">
+                                  <h2 className="text-center text-3xl tablet:text-5xl max-w-2xl leading-tight font-bold text-pretty capitalize">
                                       Look no further! Here's your guide to locating the best mangoes near you
                                   </h2>
                                   <p className="text-sm max-w-2xl leading-loose">
-                                      Alphonso | Banganapalli | Kesar | Dasheri | Langra | Totapuri | Chaunsa | Neelam | Ratnagiri | Sindhura | Himayat | Mallika | Raspuri | Suvernarekha | Ambika | Vanraj | Mulgoa                                  </p>
+                                      One of the finest mangoes you'll ever taste is the Alphonso — golden, buttery, and intensely aromatic, with a richness that makes it the undisputed king of mangoes.                                </p>
                                   <Link href="/shop" className="bg-primary py-3 px-5 font-bold hover:bg-secondary uppercase text-white text-xs rounded-md">
                                       shop now
                                   </Link>
