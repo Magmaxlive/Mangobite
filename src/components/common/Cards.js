@@ -28,7 +28,7 @@ export default function Cards() {
       <SectionHeading mainHeading='why mangobite' minorHeading='shop with us' />
         <div className="grid grid-cols-1 md:grid-cols-2 tablet:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {features.map((i,index)=>(
-                <div key={index} className="flex flex-col gap-6 justify-center items-center tablet:max-w-[90%] p-8 bg-gray-200 rounded-md">
+                <div key={index} className="flex flex-col gap-6 justify-center items-center lg:max-w-[90%] p-8 bg-gray-200 rounded-md">
                     <Image src={i.icon} height={100} width={100} alt={i.title} className='rounded-md' />
                     <h4 className="text-center font-bold text-base">
                         {i.title}

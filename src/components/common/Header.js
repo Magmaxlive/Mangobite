@@ -42,7 +42,7 @@ const Navbar = () => {
     <>
         <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
         <nav className={`fixed top-0 left-0 flex flex-col w-full z-50 border-neutral-900 transition-colors duration-300 ${scrolled ? 'bg-banner' : 'bg-transparent'}`}>
-            <div className={`bg-primary/70  overflow-hidden transition-all duration-300 ${scrolled ? 'max-h-0 opacity-0' : 'max-h-16 opacity-100'}`}>
+            <div className={`bg-primary/80  overflow-hidden transition-all duration-300 ${scrolled ? 'max-h-0 opacity-0' : 'max-h-16 opacity-100'}`}>
                 <div className="flex justify-between py-2 px-8 max-w-7xl mx-auto">
 
                     <Link className="text-white flex hover:underline underline-offset-4 items-center gap-2" href="tel:0277224561">
