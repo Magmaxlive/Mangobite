@@ -2,8 +2,11 @@
 
 import { FloatingWhatsApp } from "react-floating-whatsapp";
 import Link from "next/link";
+import { useCart } from "@/context/CartContext";
 
 export default function WhatsApp() {
+  const { cartOpen } = useCart()
+  if (cartOpen) return null
   return (
     <>
       <Link
