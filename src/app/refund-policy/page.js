@@ -1,6 +1,12 @@
 import PageBanner from '@/components/common/PageBanner'
 import React from 'react'
 
+export const metadata = {
+  title: 'Mango Bite Refund Policy: Hassle-Free Returns and Cancellations',
+  description: "Understand Mango Bite's refund policy: Learn about our straightforward process for returns and refunds to ensure your satisfaction with every purchase.",
+  alternates: { canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/` },
+};
+
 export default function page() {
 
     const refundPolicy = [

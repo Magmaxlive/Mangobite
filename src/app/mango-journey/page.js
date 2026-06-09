@@ -3,6 +3,13 @@ import PageBanner from '@/components/common/PageBanner'
 import SectionHeading from '@/components/common/SectionHeading'
 import React from 'react'
 
+export const metadata = {
+  title: 'Mango Bite Journey, Delivering Indian Mangoes to New Zealand',
+  description: "Uncover the story behind Mango Bite's dedication to offering fresh Indian mangoes in New Zealand. Shop online and savor the flavors of India.",
+  alternates: { canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/` },
+};
+
+
 export default function page() {
   return (
     <div className='flex flex-col gap-10'>

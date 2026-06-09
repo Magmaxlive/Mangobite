@@ -4,6 +4,12 @@ import ProductCard from '@/components/common/ProductCard'
 
 export const revalidate = 0
 
+export const metadata = {
+  title: 'Shop Fresh Indian Mangoes Online in New Zealand, Mango Bite',
+  description: "Browse Mango Bite's online store for a variety of fresh Indian mangoes, including Alphonso, Banganapalli, and Kesar, available for delivery across New Zealand",
+  alternates: { canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/` },
+};
+
 export default async function ShopPage() {
   const raw = await getProducts()
   const products = [...raw].sort((a, b) => {

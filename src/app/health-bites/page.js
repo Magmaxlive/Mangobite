@@ -3,6 +3,14 @@ import SectionHeading from '@/components/common/SectionHeading'
 import HealthBenefitsArc from '@/components/common/HealthBenefitsArc'
 import React from 'react'
 
+
+export const metadata = {
+  title: 'Mango Health Insights, Boost Your Well-being with Every Bite',
+  description: "Explore the numerous health benefits of mangoes, including their rich vitamin content and antioxidant properties, on Mango Bite's Health Bites page",
+  alternates: { canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/` },
+};
+
+
 export default function page() {
   return (
     <div className='flex flex-col [overflow-x:clip]'>

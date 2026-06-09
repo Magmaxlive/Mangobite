@@ -4,6 +4,13 @@ import SectionHeading from '@/components/common/SectionHeading'
 import TypesOfMangoes from '@/components/common/TypesOfMangoes'
 import React from 'react'
 
+
+export const metadata = {
+  title: 'Mangopedia, Comprehensive Guide to Indian Mango Varieties',
+  description: "Explore Mangopedia by Mango Bite: Your ultimate guide to Indian mango varieties, detailing flavors, origins, and availability in New Zealand.",
+  alternates: { canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/` },
+};
+
 export default function page() {
 
     const mangotypes = [

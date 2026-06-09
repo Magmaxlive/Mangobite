@@ -6,6 +6,13 @@ import SectionHeading from '@/components/common/SectionHeading';
 import ContactForm from '@/components/common/ContactForm';
 
 
+export const metadata = {
+  title: 'Get in Touch with Mango Bite, Call ‭02772-24561‬',
+  description: "Get in touch with Mango Bite for inquiries about our premium Indian mangoes. Call us at 02772-24561 or visit our contact page for more details.",
+  alternates: { canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/` },
+};
+
+
 export default function page() {
 
     const contact = [

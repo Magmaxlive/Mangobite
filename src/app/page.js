@@ -11,6 +11,13 @@ import Testimonials from '@/components/common/Testimonials'
 import Cards from '@/components/common/Cards'
 
 
+export const metadata = {
+  title: 'Buy Fresh Mangoes Online in New Zealand, Mango Bite',
+  description: 'Leading Fresh Mango Exporter in Auckland, NZ Mango Bite, offers a wide range of fresh Indian mangoes. Order online or visit our New Zealand store.',
+  alternates: { canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/` },
+};
+
+
 export default async function Home() {
 
   const raw = await getProducts()

@@ -8,6 +8,14 @@ import GalleryCarousel from '@/components/common/GalleryCarousel'
 import Link from 'next/link'
 import { getGalleryImages } from '@/lib/shopify'
 
+
+export const metadata = {
+  title: 'The Mango Bite Story, From Indian Orchards to Kiwi Homes',
+  description: "Explore the story behind Mango Bite and how we source premium Indian mango varieties like Alphonso, Banganapalli, and Kesar for mango lovers in New Zealand.",
+  alternates: { canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/` },
+};
+
+
 export default async function page() {
   const galleryImages = await getGalleryImages()
 
