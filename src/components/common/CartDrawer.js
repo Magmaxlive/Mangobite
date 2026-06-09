@@ -118,7 +118,7 @@ export default function CartDrawer() {
             </div>
             <p className="text-xs text-gray-400">Shipping & taxes calculated at checkout</p>
             <a
-              href={`${cart.checkoutUrl}${cart.checkoutUrl.includes('?') ? '&' : '?'}return_to=${encodeURIComponent(typeof window !== 'undefined' ? window.location.origin : '/')}`}
+              href={`${cart.checkoutUrl}${cart.checkoutUrl.includes('?') ? '&' : '?'}return_to=${encodeURIComponent(process.env.NEXT_PUBLIC_SITE_URL || (typeof window !== 'undefined' ? window.location.origin : '/'))}`}
               className="w-full bg-banner text-white text-center font-semibold py-4 uppercase tracking-wide hover:opacity-90 transition"
             >
               Checkout
