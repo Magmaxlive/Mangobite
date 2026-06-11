@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import React, { useState, useEffect, useRef } from 'react'
 import Image from "next/image";
@@ -12,7 +12,7 @@ import SearchModal from '@/components/common/SearchModal';
 import { FaFacebook,FaInstagram,FaPhoneAlt  } from "react-icons/fa";
 
 
-const Navbar = () => {
+const Navbar = ({ banners = [] }) => {
     const [drawerOpen,setDrawerOpen]=useState(false)
     const [scrolled,setScrolled]=useState(false)
     const pathname=usePathname()
@@ -42,26 +42,48 @@ const Navbar = () => {
     <>
         <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
         <nav className={`fixed top-0 left-0 flex flex-col w-full z-50 border-neutral-900 transition-colors duration-300 ${scrolled ? 'bg-banner' : 'bg-transparent'}`}>
-            <div className={`bg-primary/80  overflow-hidden transition-all duration-300 ${scrolled ? 'max-h-0 opacity-0' : 'max-h-16 opacity-100'}`}>
-                <div className="flex justify-between py-2 px-8 max-w-7xl mx-auto">
+            <div className={`bg-white overflow-hidden px-8 transition-all duration-300 ${scrolled ? 'max-h-0 opacity-0' : 'max-h-16 opacity-100'}`}>
+                <div className="flex justify-between items-center gap-3 py-2 max-w-7xl mx-auto gap-4">
 
-                    <Link className="text-white flex hover:underline underline-offset-4 items-center gap-2" href="tel:0277224561">
+                    <Link className="text-banner flex hover:underline underline-offset-4 items-center gap-2 flex-shrink-0" href="tel:0277224561">
                             <FaPhoneAlt size={18} />
-                            <span className="text-sm">02772-24561</span>
+                            <span className="text-sm font-semibold md:flex hidden">02772-24561</span>
                     </Link>
 
-                    <div className="flex gap-3">
-                        <Link href="https://www.facebook.com/mangobitenz" className='text-white hover:underline underline-offset-4' target="_blank" rel="noopener noreferrer">
+                    {banners.length > 0 && (() => {
+                      const texts = banners.map(b => b.title).filter(Boolean)
+                      const sp = ' '.repeat(8)
+                      const items = Array.from({ length: 5 }).flatMap((_, ri) =>
+                        texts.flatMap((text, ti) => [
+                          <span key={`${ri}-t${ti}`}>{text}</span>,
+                          <span key={`${ri}-s${ti}`}>{sp}</span>,
+                          <img key={`${ri}-f${ti}`} src="/images/fire.png" alt="" width={14} height={14} className="inline-block align-middle flame-glow" />,
+                          <span key={`${ri}-s2${ti}`}>{sp}</span>,
+                        ])
+                      )
+                      return (
+                        <div className="flex-1 overflow-hidden" style={{ maskImage: 'linear-gradient(to right, transparent, black 12%, black 88%, transparent)', WebkitMaskImage: 'linear-gradient(to right, transparent, black 12%, black 88%, transparent)' }}>
+                          <div className="animate-marquee flex w-max text-banner text-xs font-semibold tracking-wide whitespace-nowrap">
+                            <span>{items}</span>
+                            <span aria-hidden="true">{items}</span>
+                          </div>
+                        </div>
+                      )
+                    })()}
+
+                    <div className="flex gap-3 flex-shrink-0">
+                        <Link href="https://www.facebook.com/mangobitenz" className='text-banner hover:underline underline-offset-4 font-bold' target="_blank" rel="noopener noreferrer">
                             <FaFacebook size={20} />
                         </Link>
-                        <Link href="https://www.instagram.com/mangobitenz" className='text-white hover:underline underline-offset-4' target="_blank" rel="noopener noreferrer">
+                        <Link href="https://www.instagram.com/mangobitenz" className='text-banner hover:underline underline-offset-4 font-bold' target="_blank" rel="noopener noreferrer">
                             <FaInstagram size={20} />
                         </Link>
                     </div>
 
                 </div>
             </div>
-            <div className="container py-4 px-8 mx-auto relative text-sm max-w-7xl">
+            <div className="px-8">
+                <div className="container py-4 mx-auto relative text-sm max-w-7xl">
                 <div className="flex justify-between items-center">
                     <Link href='/' className="flex items-center flex-shrik-0">
                         <Image src="/images/mango_logo.png"
@@ -80,13 +102,13 @@ const Navbar = () => {
                         ))}
                     </ul>
 
-                    <div className="hidden lg:flex justify-center text-white font-bold gap-3 items-center">
+                    <div className="hidden lg:flex justify-center text-banner font-bold gap-3 items-center">
                         <button onClick={() => setSearchOpen(true)} className="cursor-pointer"><Search /></button>
                         <a href={accountUrl} target="_blank" rel="noreferrer" className="cursor-pointer"><UserRound /></a>
                         <button onClick={() => setCartOpen(true)} className="relative cursor-pointer">
                             <ShoppingBag />
                             {itemCount > 0 && (
-                                <span className="absolute -top-2 -right-2 bg-primary text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                                <span className="absolute -top-2 -right-2 bg-primary text-banner text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                                     {itemCount}
                                 </span>
                             )}
@@ -94,7 +116,7 @@ const Navbar = () => {
                     </div>
 
                     <div className="lg:hidden md:flex flex-col justify-end">
-                        <button onClick={toggleNavbar} className='cursor-pointer text-white'>
+                        <button onClick={toggleNavbar} className='cursor-pointer text-primary'>
                             {drawerOpen ?<X/> : <Menu />}
                         </button>
                     </div>
@@ -112,13 +134,13 @@ const Navbar = () => {
                         ))}
                         </ul>
 
-                        <div className="flex mt-5 justify-between gap-4 text-white items-start ">
+                        <div className="flex mt-5 justify-between gap-4 text-banner items-start ">
                             <button onClick={() => { setSearchOpen(true); setDrawerOpen(false) }} className="cursor-pointer"><Search /></button>
                             <a href={accountUrl} target="_blank" rel="noreferrer" onClick={() => setDrawerOpen(false)} className="cursor-pointer"><UserRound /></a>
                             <button onClick={() => setCartOpen(true)} className="relative cursor-pointer">
                                 <ShoppingBag />
                                 {itemCount > 0 && (
-                                    <span className="absolute -top-2 -right-2 bg-primary text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                                    <span className="absolute -top-2 -right-2 bg-primary text-primary text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                                         {itemCount}
                                     </span>
                                 )}
@@ -126,6 +148,7 @@ const Navbar = () => {
                         </div>
                     </div>
                 }
+            </div>
             </div>
         </nav>
     </>

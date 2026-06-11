@@ -373,6 +373,49 @@ export async function searchProducts(query) {
   }))
 }
 
+export async function getOfferBanners() {
+  const query = `{
+    metaobjects(type: "offer_banner", first: 10) {
+      edges {
+        node {
+          id
+          fields {
+            key
+            value
+            reference {
+              ... on MediaImage {
+                image { url altText width height }
+              }
+              ... on Product {
+                handle
+                title
+              }
+            }
+          }
+        }
+      }
+    }
+  }`
+
+  const { data, errors } = await client.request(query)
+  if (errors) { console.error('getOfferBanners error:', errors); return [] }
+
+  return (
+    data?.metaobjects?.edges?.map(({ node }) => {
+      const field = (key) => node.fields.find(f => f.key === key)
+      const imageField = field('banner')
+      const productField = field('product')
+      return {
+        id: node.id,
+        title: field('offer_text')?.value ?? null,
+        productHandle: productField?.reference?.handle ?? null,
+        productTitle: productField?.reference?.title ?? null,
+        image: imageField?.reference?.image ?? null,
+      }
+    }).filter(b => b.image) ?? []
+  )
+}
+
 export async function getGalleryImages() {
   const query = `{
     metaobjects(type: "gallery", first: 50) {

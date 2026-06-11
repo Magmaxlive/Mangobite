@@ -11,7 +11,7 @@ export default function WhatsApp() {
     <>
       <Link
         href="/shop"
-        className="bg-primary hover:bg-secondary text-white transition-colors duration-200 shop-now-pulse"
+        className="bg-primary hover:bg-secondary text-white transition-colors duration-200"
         style={{
           position: "fixed",
           bottom: "84px",
