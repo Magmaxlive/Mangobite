@@ -39,7 +39,21 @@ export function CartProvider({ children }) {
       if (liveVariant && !liveVariant.availableForSale) {
         return 'Sorry, this product is currently out of stock.'
       }
-      const { cart: updated, userErrors } = await addToCart(c.id, [{ merchandiseId: variantId, quantity }])
+      let { cart: updated, userErrors } = await addToCart(c.id, [{ merchandiseId: variantId, quantity }])
+
+      // Cart expired — create a fresh one and retry
+      if (userErrors?.some(e => /cart.*exist|exist.*cart/i.test(e.message))) {
+        localStorage.removeItem('shopify_cart_id')
+        setCart(null)
+        const fresh = await createCart()
+        if (!fresh) return 'Could not create cart. Please try again.'
+        localStorage.setItem('shopify_cart_id', fresh.id)
+        setCart(fresh)
+        const retry = await addToCart(fresh.id, [{ merchandiseId: variantId, quantity }])
+        updated = retry.cart
+        userErrors = retry.userErrors
+      }
+
       if (userErrors?.length > 0) return userErrors[0].message
       if (updated) {
         const wasAdded = updated.lines.some(l => l.variantId === variantId && l.quantity > 0)
