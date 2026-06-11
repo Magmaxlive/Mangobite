@@ -100,7 +100,7 @@ export default function ProductCard({ product }) {
             disabled
             className="w-full flex items-center justify-center gap-2 bg-gray-100 text-gray-400 text-xs font-semibold py-2.5 rounded-sm cursor-not-allowed"
           >
-            Sold Out
+            {available ? 'Max Qty in Cart' : 'Sold Out'}
           </button>
         )}
         {addError && (

@@ -205,7 +205,7 @@ export default function ProductDetail({ product }) {
             }`}
           >
             {added ? <Check size={18} /> : <ShoppingBag size={18} />}
-            {added ? 'Added!' : !canAdd ? 'Sold Out' : isPreOrder ? 'Pre Order Now' : 'Add to Cart'}
+            {added ? 'Added!' : !canAdd ? (available ? 'Max Qty in Cart' : 'Sold Out') : isPreOrder ? 'Pre Order Now' : 'Add to Cart'}
           </button>
 
           {addError && (
