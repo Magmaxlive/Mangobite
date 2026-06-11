@@ -21,7 +21,8 @@ export default function ProductDetail({ product }) {
   const allMedia = product.media ?? []
   const available = localAvailable ?? (selectedVariant?.availableForSale ?? false)
   const cartQty = getCartQty(selectedVariant?.id)
-  const maxQty = selectedVariant?.quantityAvailable ?? Infinity
+  const isPreOrder = available && selectedVariant?.quantityAvailable !== null && selectedVariant?.quantityAvailable <= 0
+  const maxQty = isPreOrder ? Infinity : (selectedVariant?.quantityAvailable ?? Infinity)
   const canAdd = available && cartQty < maxQty
   const hasMultipleVariants = product.variants.length > 1 && product.variants[0]?.title !== 'Default Title'
   const currentMedia = allMedia[mediaIndex]
@@ -136,8 +137,8 @@ export default function ProductDetail({ product }) {
                   {fmt(selectedVariant.compareAtPrice.amount, selectedVariant.compareAtPrice.currencyCode)}
                 </span>
               )}
-              <span className={`text-xs font-semibold px-2 py-1 rounded-full ${available ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
-                {available ? 'In Stock' : 'Sold Out'}
+              <span className={`text-xs font-semibold px-2 py-1 rounded-full ${!available ? 'bg-gray-100 text-gray-500' : isPreOrder ? 'bg-orange-100 text-orange-600' : 'bg-green-100 text-green-700'}`}>
+                {!available ? 'Sold Out' : isPreOrder ? 'Pre Order' : 'In Stock'}
               </span>
             </div>
           </div>
@@ -196,13 +197,15 @@ export default function ProductDetail({ product }) {
             className={`flex items-center justify-center gap-2 font-semibold py-4 uppercase tracking-wide transition cursor-pointer disabled:cursor-not-allowed rounded-sm ${
               added
                 ? 'bg-secondary text-white'
+                : canAdd && isPreOrder
+                ? 'bg-primary text-white hover:bg-orange-500'
                 : canAdd
                 ? 'bg-banner text-white hover:bg-primary'
                 : 'bg-gray-200 text-gray-400'
             }`}
           >
             {added ? <Check size={18} /> : <ShoppingBag size={18} />}
-            {added ? 'Added to Cart!' : canAdd ? 'Add to Cart' : 'Sold Out'}
+            {added ? 'Added!' : !canAdd ? 'Sold Out' : isPreOrder ? 'Pre Order Now' : 'Add to Cart'}
           </button>
 
           {addError && (

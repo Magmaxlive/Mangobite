@@ -36,7 +36,7 @@ export function CartProvider({ children }) {
       const c = await ensureCart()
       if (!c) return 'Could not create cart. Please try again.'
       const liveVariant = await getVariantAvailability(variantId)
-      if (liveVariant && (!liveVariant.availableForSale || liveVariant.quantityAvailable === 0)) {
+      if (liveVariant && !liveVariant.availableForSale) {
         return 'Sorry, this product is currently out of stock.'
       }
       const { cart: updated, userErrors } = await addToCart(c.id, [{ merchandiseId: variantId, quantity }])

@@ -14,7 +14,8 @@ export default function ProductCard({ product }) {
   const firstVariant = product.variants[0]
   const available = localAvailable ?? (firstVariant?.availableForSale ?? false)
   const cartQty = getCartQty(firstVariant?.id)
-  const maxQty = firstVariant?.quantityAvailable ?? Infinity
+  const isPreOrder = available && firstVariant?.quantityAvailable !== null && firstVariant?.quantityAvailable <= 0
+  const maxQty = isPreOrder ? Infinity : (firstVariant?.quantityAvailable ?? Infinity)
   const canAdd = available && cartQty < maxQty
 
   const fmt = (amount, currency) =>
@@ -48,17 +49,15 @@ export default function ProductCard({ product }) {
           </div>
         )}
 
-        {!available && (
-          <div className="absolute top-3 left-3">
+        <div className="absolute top-3 left-3">
+          {!available ? (
             <span className="text-[10px] font-bold uppercase tracking-widest text-white bg-gray-400 px-2 py-1 rounded-sm">Sold Out</span>
-          </div>
-        )}
-
-        {available && (
-          <div className="absolute top-3 left-3">
+          ) : isPreOrder ? (
+            <span className="text-[10px] font-bold uppercase tracking-widest text-white bg-primary px-2 py-1 rounded-sm">Pre Order</span>
+          ) : (
             <span className="text-[10px] font-bold uppercase tracking-widest text-white bg-secondary px-2 py-1 rounded-sm">In Stock</span>
-          </div>
-        )}
+          )}
+        </div>
       </Link>
 
       {/* Info */}
@@ -91,10 +90,10 @@ export default function ProductCard({ product }) {
               if (err) { setAddError(err); setLocalAvailable(false) }
             }}
             disabled={loading}
-            className="w-full flex items-center justify-center gap-2 bg-banner text-white text-xs font-semibold py-2.5 rounded-sm hover:bg-primary transition-colors cursor-pointer disabled:opacity-50"
+            className={`w-full flex items-center justify-center gap-2 text-white text-xs font-semibold py-2.5 rounded-sm transition-colors cursor-pointer disabled:opacity-50 ${isPreOrder ? 'bg-primary hover:bg-orange-500' : 'bg-banner hover:bg-primary'}`}
           >
             <ShoppingBag size={14} />
-            Add to Cart
+            {isPreOrder ? 'Pre Order Now' : 'Add to Cart'}
           </button>
         ) : (
           <button

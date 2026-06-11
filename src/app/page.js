@@ -21,11 +21,12 @@ export const metadata = {
 export default async function Home() {
 
   const raw = await getProducts()
-  const products = [...raw].sort((a, b) => {
-    const aIn = a.variants.some(v => v.availableForSale)
-    const bIn = b.variants.some(v => v.availableForSale)
-    return aIn === bIn ? 0 : aIn ? -1 : 1
-  }).slice(0,8)
+  const productStatus = (p) => {
+    if (p.variants.some(v => v.availableForSale && (v.quantityAvailable === null || v.quantityAvailable > 0))) return 0
+    if (p.variants.some(v => v.availableForSale)) return 1
+    return 2
+  }
+  const products = [...raw].sort((a, b) => productStatus(a) - productStatus(b)).slice(0, 8)
 
   return (
     <div>

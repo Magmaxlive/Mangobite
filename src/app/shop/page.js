@@ -12,11 +12,12 @@ export const metadata = {
 
 export default async function ShopPage() {
   const raw = await getProducts()
-  const products = [...raw].sort((a, b) => {
-    const aIn = a.variants.some(v => v.availableForSale)
-    const bIn = b.variants.some(v => v.availableForSale)
-    return aIn === bIn ? 0 : aIn ? -1 : 1
-  })
+  const productStatus = (p) => {
+    if (p.variants.some(v => v.availableForSale && (v.quantityAvailable === null || v.quantityAvailable > 0))) return 0
+    if (p.variants.some(v => v.availableForSale)) return 1
+    return 2
+  }
+  const products = [...raw].sort((a, b) => productStatus(a) - productStatus(b))
 
   return (
     <div className="flex flex-col">

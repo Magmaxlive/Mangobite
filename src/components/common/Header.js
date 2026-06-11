@@ -102,13 +102,13 @@ const Navbar = ({ banners = [] }) => {
                         ))}
                     </ul>
 
-                    <div className="hidden lg:flex justify-center text-banner font-bold gap-3 items-center">
+                    <div className="hidden lg:flex justify-center text-white font-bold gap-3 items-center">
                         <button onClick={() => setSearchOpen(true)} className="cursor-pointer"><Search /></button>
                         <a href={accountUrl} target="_blank" rel="noreferrer" className="cursor-pointer"><UserRound /></a>
                         <button onClick={() => setCartOpen(true)} className="relative cursor-pointer">
                             <ShoppingBag />
                             {itemCount > 0 && (
-                                <span className="absolute -top-2 -right-2 bg-primary text-banner text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                                <span className="absolute -top-2 -right-2 bg-primary text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                                     {itemCount}
                                 </span>
                             )}
