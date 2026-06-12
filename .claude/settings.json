@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Read(//c/Users/devel/.claude/projects/c--Users-devel-OneDrive-Desktop-mangobite-nextjs/**)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)"
     ]
   }
 }

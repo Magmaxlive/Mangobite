@@ -1,0 +1,48 @@
+# Mangobite
+> Premium Indian Mangoes delivered across New Zealand.
+
+Mangobite imports and delivers authentic Indian mango varieties including Alphonso, Kesar, Banganapalli, Himayat, Langda, Dasheri, Mallika, Chaunsa, and more throughout New Zealand. We provide information about mango varieties, health benefits, recipes, and seasonal availability.
+
+## Main Pages
+- [Home](https://mangobite.co.nz/): Mangobite homepage — premium Indian mango imports delivered fresh across New Zealand.
+- [Shop](https://mangobite.co.nz/shop/): Browse the full range of Indian mango varieties available for delivery in New Zealand.
+- [My Mango Story](https://mangobite.co.nz/my-mango-story/): The story behind Mangobite and its mission to bring authentic Indian mangoes to New Zealand.
+- [Mango Journey](https://mangobite.co.nz/mango-journey/): How mangoes travel from Indian orchards to doorsteps across New Zealand.
+- [Health Bites](https://mangobite.co.nz/health-bites/): Information on the nutritional and health benefits of different mango varieties.
+- [Mangopedia](https://mangobite.co.nz/mangopedia/): A guide to Indian mango varieties, their flavours, origins, and seasonal availability.
+- [Contact](https://mangobite.co.nz/contact/): Get in touch with the Mangobite team.
+
+## Fresh Mango Varieties
+- [Alphonso Mango](https://mangobite.co.nz/product/alphonso-mango/): One of India's most prized mango varieties, known for its rich, creamy texture and sweet flavour.
+- [Kesar Mango](https://mangobite.co.nz/product/kesar-mango/): A fragrant, saffron-coloured mango from Gujarat, known for its sweet taste and smooth pulp.
+- [Banganapalli (Badami) Mango](https://mangobite.co.nz/product/banganapali-badami-mango/): A large, fibreless Andhra Pradesh mango with a mild sweetness, popular for fresh eating.
+- [Langda Mango](https://mangobite.co.nz/product/langda-mango/): A tangy-sweet mango from Uttar Pradesh with greenish-yellow skin and juicy pulp.
+- [Chaunsa Mango](https://mangobite.co.nz/product/chaunsa-mango/): A golden-skinned, very sweet mango variety popular in North India.
+- [Dasheri Mango](https://mangobite.co.nz/product/dusheri-mango/): A classic North Indian mango with a fragrant aroma and sweet, fibreless pulp.
+- [Neelam Mango](https://mangobite.co.nz/product/neelam-mango/): A compact, aromatic South Indian mango with a rich, sweet flavour.
+- [Rajapuri Mango](https://mangobite.co.nz/product/rajapuri-mango/): A large Gujarati mango variety with a mild sweetness, often enjoyed fresh.
+- [Totapuri Mango](https://mangobite.co.nz/product/totapuri-mango/): A South Indian mango with a distinctive curved shape and tangy-sweet flavour.
+- [Cheruku Rasalu Mango](https://mangobite.co.nz/product/cheruku-rasalu-mango/): An Andhra Pradesh mango known for its juicy, sugarcane-like sweetness.
+- [Payri Mango](https://mangobite.co.nz/product/payri-mango/): A Gujarati mango variety with a sweet, aromatic flavour, often enjoyed early in the season.
+- [Mallika Mango](https://mangobite.co.nz/product/mallika-mango/): A hybrid mango variety known for its rich aroma and sweet, fibreless pulp.
+- [Himayat (Imam Pasand) Mango](https://mangobite.co.nz/product/himayat/): A premium Andhra Pradesh mango prized for its sweetness and rich aroma.
+- [Amrapali Mango](https://mangobite.co.nz/product/amrapalli-mango/): A small, deep-orange mango known for its intense sweetness and rich flavour.
+- [Sindhura Mango](https://mangobite.co.nz/product/sindhura/): A South Indian mango variety with bright red-orange skin and sweet pulp.
+- [Pedda Rasallu Mango](https://mangobite.co.nz/product/pedda-rasallu-mango/): A large Andhra Pradesh mango variety known for its juicy, sweet pulp.
+
+## Mango Combos & Deals
+- [Kesar Twin Box Deal](https://mangobite.co.nz/product/kesar-twin-box-deal/): A value bundle featuring two boxes of premium Kesar mangoes.
+
+## Raw & Pickling Mangoes
+- [Green Sour Mango](https://mangobite.co.nz/product/green-sour-mango/): Raw, tangy green mangoes suited for pickling and traditional recipes.
+- [Totapuri Raw Green Mango](https://mangobite.co.nz/product/totapuri-raw-green-mango/): Unripe Totapuri mangoes ideal for pickles, chutneys, and savoury dishes.
+- [Tella Gulabeelu Pickle Green Mango](https://mangobite.co.nz/product/tella-gulabeelu-pickle-green-mango/): Raw mangoes traditionally used for making Andhra-style pickles.
+- [Avakai Pickle Green Mango](https://mangobite.co.nz/product/avakai-pickle-green-mango/): Raw mangoes suited for making Avakai, a popular spicy Andhra mango pickle.
+
+## Sitemap
+https://mangobite.co.nz/sitemap.xml
+
+## Contact
+Website: https://mangobite.co.nz/
+Email: hello@mangobite.co.nz
+
