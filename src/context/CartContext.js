@@ -9,6 +9,7 @@ export function CartProvider({ children }) {
   const [cart, setCart] = useState(null)
   const [cartOpen, setCartOpen] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [cartWarning, setCartWarning] = useState(null)
 
   useEffect(() => {
     const stored = localStorage.getItem('shopify_cart_id')
@@ -30,7 +31,7 @@ export function CartProvider({ children }) {
     return c
   }, [cart])
 
-  const addItem = useCallback(async (variantId, quantity = 1) => {
+  const addItem = useCallback(async (variantId, quantity = 1, unlimited = false) => {
     setLoading(true)
     try {
       const c = await ensureCart()
@@ -38,6 +39,16 @@ export function CartProvider({ children }) {
       const liveVariant = await getVariantAvailability(variantId)
       if (liveVariant && !liveVariant.availableForSale) {
         return 'Sorry, this product is currently out of stock.'
+      }
+      let stockWarning = null
+      if (!unlimited && liveVariant && !liveVariant.currentlyNotInStock && liveVariant.quantityAvailable !== null) {
+        const currentCartQty = cart?.lines?.find(l => l.variantId === variantId)?.quantity ?? 0
+        const remaining = liveVariant.quantityAvailable - currentCartQty
+        if (remaining <= 0) return 'Sorry, this product is currently out of stock.'
+        if (quantity > remaining) {
+          quantity = remaining
+          stockWarning = `Only ${remaining} item${remaining !== 1 ? 's' : ''} available. Added ${remaining} to your cart.`
+        }
       }
       let { cart: updated, userErrors } = await addToCart(c.id, [{ merchandiseId: variantId, quantity }])
 
@@ -61,18 +72,27 @@ export function CartProvider({ children }) {
         setCart(updated)
         setCartOpen(true)
       }
-      return null
+      return stockWarning
     } finally {
       setLoading(false)
     }
   }, [ensureCart])
 
   const updateItem = useCallback(async (lineId, quantity) => {
-    if (!cart) return
+    if (!cart) return null
     setLoading(true)
     try {
-      const updated = await updateCartLine(cart.id, [{ id: lineId, quantity }])
-      if (updated) setCart(updated)
+      const { cart: updated, userErrors } = await updateCartLine(cart.id, [{ id: lineId, quantity }])
+      if (userErrors?.length > 0) return userErrors[0].message
+      if (updated) {
+        const lineStillExists = updated.lines.some(l => l.id === lineId)
+        setCart(updated)
+        if (!lineStillExists) {
+          setCartWarning('A product went out of stock and was removed from your cart.')
+          return null
+        }
+      }
+      return null
     } finally {
       setLoading(false)
     }
@@ -96,7 +116,7 @@ export function CartProvider({ children }) {
   }, [cart])
 
   return (
-    <CartContext.Provider value={{ cart, cartOpen, setCartOpen, addItem, updateItem, removeItem, loading, itemCount, getCartQty }}>
+    <CartContext.Provider value={{ cart, cartOpen, setCartOpen, addItem, updateItem, removeItem, loading, itemCount, getCartQty, cartWarning, setCartWarning }}>
       {children}
     </CartContext.Provider>
   )

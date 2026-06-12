@@ -53,6 +53,7 @@ export async function getProducts() {
               }
             }
           }
+          metafield(namespace: "custom", key: "unlimited_stock") { value }
         }
       }
     }
@@ -103,6 +104,7 @@ export async function getProduct(handle) {
           }
         }
         options { id name values }
+        metafield(namespace: "custom", key: "unlimited_stock") { value }
       }
     }
   `
@@ -141,6 +143,7 @@ function normalizeProduct(node) {
     images: media.filter(m => m.type === 'image'),
     variants: node.variants?.edges?.map(({ node: v }) => v) ?? [],
     options: node.options ?? [],
+    unlimited: node.metafield?.value === 'true',
   }
 }
 
@@ -151,6 +154,7 @@ export async function getVariantAvailability(variantId) {
         ... on ProductVariant {
           availableForSale
           quantityAvailable
+          currentlyNotInStock
         }
       }
     }
@@ -231,13 +235,17 @@ export async function updateCartLine(cartId, lines) {
           lines(first: 100) { edges { node { ...LineFields } } }
           cost { totalAmount { amount currencyCode } }
         }
+        userErrors { field message }
       }
     }
     ${LINE_FRAGMENT}
   `
   const { data, errors } = await client.request(mutation, { variables: { cartId, lines } })
-  if (errors) { console.error('updateCartLine error:', errors); return null }
-  return normalizeCart(data?.cartLinesUpdate?.cart)
+  if (errors) { console.error('updateCartLine error:', errors); return { cart: null, userErrors: [] } }
+  return {
+    cart: normalizeCart(data?.cartLinesUpdate?.cart),
+    userErrors: data?.cartLinesUpdate?.userErrors ?? [],
+  }
 }
 
 export async function removeCartLine(cartId, lineIds) {
@@ -267,11 +275,14 @@ const LINE_FRAGMENT = `
       ... on ProductVariant {
         id
         title
+        quantityAvailable
+        currentlyNotInStock
         price { amount currencyCode }
         product {
           title
           handle
           images(first: 1) { edges { node { url altText } } }
+          metafield(namespace: "custom", key: "unlimited_stock") { value }
         }
       }
     }
@@ -289,6 +300,9 @@ function normalizeCart(cart) {
       variantId: node.merchandise?.id,
       variantTitle: node.merchandise?.title,
       price: node.merchandise?.price,
+      quantityAvailable: node.merchandise?.quantityAvailable ?? null,
+      currentlyNotInStock: node.merchandise?.currentlyNotInStock ?? false,
+      unlimited: node.merchandise?.product?.metafield?.value === 'true',
       product: {
         title: node.merchandise?.product?.title,
         handle: node.merchandise?.product?.handle,

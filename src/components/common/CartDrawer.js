@@ -1,15 +1,27 @@
 'use client'
 
+import { useState } from 'react'
 import { useCart } from '@/context/CartContext'
 import Image from 'next/image'
 import Link from 'next/link'
 import { X, Minus, Plus, ShoppingBag } from 'lucide-react'
 
 export default function CartDrawer() {
-  const { cart, cartOpen, setCartOpen, updateItem, removeItem, loading } = useCart()
+  const { cart, cartOpen, setCartOpen, updateItem, removeItem, loading, cartWarning, setCartWarning } = useCart()
+  const [lineErrors, setLineErrors] = useState({})
 
   const fmt = (amount, currency) =>
     new Intl.NumberFormat('en-NZ', { style: 'currency', currency: currency || 'NZD' }).format(amount)
+
+  const handleIncrement = async (line) => {
+    const maxQty = (line.unlimited || line.currentlyNotInStock) ? Infinity : (line.quantityAvailable ?? Infinity)
+    if (line.quantity >= maxQty) {
+      setLineErrors(prev => ({ ...prev, [line.id]: 'Maximum available quantity reached.' }))
+      return
+    }
+    const err = await updateItem(line.id, line.quantity + 1)
+    setLineErrors(prev => ({ ...prev, [line.id]: err || null }))
+  }
 
   return (
     <>
@@ -34,6 +46,16 @@ export default function CartDrawer() {
             <X size={22} />
           </button>
         </div>
+
+        {/* Stock warning */}
+        {cartWarning && (
+          <div className="flex items-center justify-between gap-2 px-6 py-3 bg-orange-50 border-b border-orange-100">
+            <p className="text-orange-600 text-xs font-medium">{cartWarning}</p>
+            <button onClick={() => setCartWarning(null)} className="text-orange-400 hover:text-orange-600 flex-shrink-0 cursor-pointer">
+              <X size={14} />
+            </button>
+          </div>
+        )}
 
         {/* Lines */}
         <div className="flex-1 overflow-y-auto px-6 py-4 flex flex-col gap-4">
@@ -78,7 +100,7 @@ export default function CartDrawer() {
 
                   <div className="flex items-center gap-3 mt-2">
                     <button
-                      onClick={() => line.quantity > 1 ? updateItem(line.id, line.quantity - 1) : removeItem(line.id)}
+                      onClick={() => { setLineErrors(prev => ({ ...prev, [line.id]: null })); line.quantity > 1 ? updateItem(line.id, line.quantity - 1) : removeItem(line.id) }}
                       disabled={loading}
                       className="w-7 h-7 flex items-center justify-center border border-gray-200 rounded hover:border-banner transition cursor-pointer disabled:opacity-40"
                     >
@@ -86,13 +108,16 @@ export default function CartDrawer() {
                     </button>
                     <span className="text-sm font-semibold w-4 text-center">{line.quantity}</span>
                     <button
-                      onClick={() => updateItem(line.id, line.quantity + 1)}
+                      onClick={() => handleIncrement(line)}
                       disabled={loading}
                       className="w-7 h-7 flex items-center justify-center border border-gray-200 rounded hover:border-banner transition cursor-pointer disabled:opacity-40"
                     >
                       <Plus size={12} />
                     </button>
                   </div>
+                  {lineErrors[line.id] && (
+                    <p className="text-red-500 text-xs mt-1">{lineErrors[line.id]}</p>
+                  )}
                 </div>
 
                 <button
