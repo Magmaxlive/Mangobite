@@ -134,7 +134,7 @@ const Navbar = ({ banners = [] }) => {
                         ))}
                         </ul>
 
-                        <div className="flex mt-5 justify-between gap-4 text-banner items-start ">
+                        <div className="flex mt-5 justify-between gap-4 text-white items-start ">
                             <button onClick={() => { setSearchOpen(true); setDrawerOpen(false) }} className="cursor-pointer"><Search /></button>
                             <a href={accountUrl} target="_blank" rel="noreferrer" onClick={() => setDrawerOpen(false)} className="cursor-pointer"><UserRound /></a>
                             <button onClick={() => setCartOpen(true)} className="relative cursor-pointer">
