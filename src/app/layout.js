@@ -42,6 +42,103 @@ export default async function RootLayout({ children }) {
       suppressHydrationWarning
       className={`${poppins.variable} ${acme.variable} ${nunito.variable} h-full antialiased`}
     >
+      <head>
+
+        {/* local schema */}
+        <script  type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+
+              "@context": "https://schema.org",
+              "@type": "Store",
+              "@id": "https://mangobite.co.nz/#store",
+              "name": "Mango Bite",
+              "url": "https://mangobite.co.nz/",
+              "image": "https://mangobite.co.nz/images/mango_logo.png",
+              "description": "Mango Bite offers fresh Indian mangoes in Auckland, New Zealand including Alphonso, Kesar, Banganapalli, Langda, Dasheri and more, with delivery available nationwide.",
+              "telephone": "+64 27 922 4561",
+              "email": "hello@mangobite.co.nz",
+              "priceRange": "$$",
+              "address": {
+                  "@type": "PostalAddress",
+                  "streetAddress": "102 White Swan Road",
+                  "addressLocality": "Mount Roskill",
+                  "addressRegion": "Auckland",
+                  "postalCode": "1041",
+                  "addressCountry": "NZ"
+              },
+              "areaServed": {
+                  "@type": "Country",
+                  "name": "New Zealand"
+              },
+              "openingHoursSpecification": [
+                  {
+                  "@type": "OpeningHoursSpecification",
+                  "dayOfWeek": [
+                      "Monday",
+                      "Tuesday",
+                      "Wednesday",
+                      "Thursday",
+                      "Friday",
+                      "Saturday",
+                      "Sunday"
+                  ],
+                  "opens": "09:00",
+                  "closes": "20:00"
+                  }
+              ],
+              "sameAs": [
+                  "https://www.facebook.com/mangobitenz/",
+                  "https://www.instagram.com/mangobitenz/"
+              ],
+              "parentOrganization": {
+                  "@id": "https://mangobite.co.nz/#organization"
+              }
+
+              })
+
+          }} />
+
+         {/* org schema */}
+
+         <script  type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Mango Bite",
+              "alternateName": "MangoBite NZ",
+              "url": "https://mangobite.co.nz/",
+              "logo": "https://mangobite.co.nz/images/mango_logo.png",
+              "image": "https://mangobite.co.nz/storefront.jpg",
+              "description": "Mango Bite is a premium Indian mango supplier in Auckland, New Zealand offering fresh Indian mango varieties including Alphonso, Kesar, Banganapalli, Langda, Dasheri and more, delivered across New Zealand.",
+              "email": "hello@mangobite.co.nz",
+              "telephone": "+64 27 922 4561",
+              "address": {
+                  "@type": "PostalAddress",
+                  "streetAddress": "102 White Swan Road",
+                  "addressLocality": "Mount Roskill",
+                  "addressRegion": "Auckland",
+                  "postalCode": "1041",
+                  "addressCountry": "NZ"
+              },
+              "areaServed": {
+                  "@type": "Country",
+                  "name": "New Zealand"
+              },
+              "sameAs": [
+                  "https://www.facebook.com/mangobitenz/",
+                  "https://www.instagram.com/mangobitenz/"
+              ]
+
+
+              })
+
+          }} />
+
+
+      </head>
       <body className="min-h-full flex flex-col">
         <CartProvider>
           <Header banners={offerBanners}/>
