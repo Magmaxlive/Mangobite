@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useCart } from '@/context/CartContext'
+import { getVariantAvailability } from '@/lib/shopify'
 import Image from 'next/image'
 import Link from 'next/link'
 import { X, Minus, Plus, ShoppingBag } from 'lucide-react'
@@ -14,11 +15,24 @@ export default function CartDrawer() {
     new Intl.NumberFormat('en-NZ', { style: 'currency', currency: currency || 'NZD' }).format(amount)
 
   const handleIncrement = async (line) => {
-    const maxQty = (line.unlimited || line.currentlyNotInStock) ? Infinity : (line.quantityAvailable ?? Infinity)
-    if (line.quantity >= maxQty) {
-      setLineErrors(prev => ({ ...prev, [line.id]: 'Maximum available quantity reached.' }))
+    if (line.unlimited || line.currentlyNotInStock) {
+      const err = await updateItem(line.id, line.quantity + 1)
+      setLineErrors(prev => ({ ...prev, [line.id]: err || null }))
       return
     }
+    const liveVariant = await getVariantAvailability(line.variantId)
+    const liveMax = liveVariant?.quantityAvailable ?? Infinity
+    if (liveMax <= 0) {
+      // Stock gone — let Shopify remove the line so the banner shows
+      await updateItem(line.id, line.quantity + 1)
+      return
+    }
+    if (line.quantity >= liveMax) {
+      setLineErrors(prev => ({ ...prev, [line.id]: 'Maximum available quantity reached.' }))
+      setTimeout(() => setLineErrors(prev => ({ ...prev, [line.id]: null })), 3000)
+      return
+    }
+    setLineErrors(prev => ({ ...prev, [line.id]: null }))
     const err = await updateItem(line.id, line.quantity + 1)
     setLineErrors(prev => ({ ...prev, [line.id]: err || null }))
   }
