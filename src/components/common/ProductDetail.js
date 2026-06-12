@@ -21,8 +21,9 @@ export default function ProductDetail({ product }) {
   const allMedia = product.media ?? []
   const available = localAvailable ?? (selectedVariant?.availableForSale ?? false)
   const cartQty = getCartQty(selectedVariant?.id)
-  const isPreOrder = available && selectedVariant?.quantityAvailable !== null && selectedVariant?.quantityAvailable <= 0
-  const maxQty = isPreOrder ? Infinity : (selectedVariant?.quantityAvailable ?? Infinity)
+  const isContinue = selectedVariant?.inventoryPolicy === 'CONTINUE'
+  const isPreOrder = available && isContinue && selectedVariant?.quantityAvailable !== null && selectedVariant?.quantityAvailable <= 0
+  const maxQty = isContinue ? Infinity : (selectedVariant?.quantityAvailable ?? Infinity)
   const canAdd = available && cartQty < maxQty
   const hasMultipleVariants = product.variants.length > 1 && product.variants[0]?.title !== 'Default Title'
   const currentMedia = allMedia[mediaIndex]

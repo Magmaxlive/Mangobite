@@ -14,8 +14,9 @@ export default function ProductCard({ product }) {
   const firstVariant = product.variants[0]
   const available = localAvailable ?? (firstVariant?.availableForSale ?? false)
   const cartQty = getCartQty(firstVariant?.id)
-  const isPreOrder = available && firstVariant?.quantityAvailable !== null && firstVariant?.quantityAvailable <= 0
-  const maxQty = isPreOrder ? Infinity : (firstVariant?.quantityAvailable ?? Infinity)
+  const isContinue = firstVariant?.inventoryPolicy === 'CONTINUE'
+  const isPreOrder = available && isContinue && firstVariant?.quantityAvailable !== null && firstVariant?.quantityAvailable <= 0
+  const maxQty = isContinue ? Infinity : (firstVariant?.quantityAvailable ?? Infinity)
   const canAdd = available && cartQty < maxQty
 
   const fmt = (amount, currency) =>

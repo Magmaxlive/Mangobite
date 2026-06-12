@@ -46,6 +46,7 @@ export async function getProducts() {
                 title
                 availableForSale
                 quantityAvailable
+                inventoryPolicy
                 price { amount currencyCode }
                 compareAtPrice { amount currencyCode }
                 selectedOptions { name value }
@@ -94,6 +95,7 @@ export async function getProduct(handle) {
               title
               availableForSale
               quantityAvailable
+              inventoryPolicy
               price { amount currencyCode }
               compareAtPrice { amount currencyCode }
               selectedOptions { name value }
