@@ -22,7 +22,7 @@ export default async function Home() {
 
   const raw = await getProducts()
   const productStatus = (p) => {
-    if (p.variants.some(v => v.availableForSale && (v.quantityAvailable === null || v.quantityAvailable > 0))) return 0
+    if (p.variants.some(v => v.availableForSale && !v.currentlyNotInStock)) return 0
     if (p.variants.some(v => v.availableForSale)) return 1
     return 2
   }
