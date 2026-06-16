@@ -9,6 +9,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import Testimonials from '@/components/common/Testimonials'
 import Cards from '@/components/common/Cards'
+import { sortProductsByCategory } from '@/config/productOrder'
 
 
 export const metadata = {
@@ -21,12 +22,7 @@ export const metadata = {
 export default async function Home() {
 
   const raw = await getProducts()
-  const productStatus = (p) => {
-    if (p.variants.some(v => v.availableForSale && !v.currentlyNotInStock)) return 0
-    if (p.variants.some(v => v.availableForSale)) return 1
-    return 2
-  }
-  const products = [...raw].sort((a, b) => productStatus(a) - productStatus(b)).slice(0, 8)
+  const products = sortProductsByCategory(raw).slice(0, 8)
 
   return (
     <div>

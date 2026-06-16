@@ -4,15 +4,12 @@ import Image from 'next/image'
 import SectionHeading from '@/components/common/SectionHeading'
 import ProductCard from '@/components/common/ProductCard'
 import { getProducts } from '@/lib/shopify'
+import { sortProductsByCategory } from '@/config/productOrder'
 
 export default async function NotFound() {
 
       const raw = await getProducts()
-      const products = [...raw].sort((a, b) => {
-        const aIn = a.variants.some(v => v.availableForSale)
-        const bIn = b.variants.some(v => v.availableForSale)
-        return aIn === bIn ? 0 : aIn ? -1 : 1
-      }).slice(0,4)
+      const products = sortProductsByCategory(raw).slice(0,4)
   return (
     <>
     <div
