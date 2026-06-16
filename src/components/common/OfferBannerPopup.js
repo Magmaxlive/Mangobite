@@ -57,7 +57,7 @@ export default function OfferBannerPopup({ banners }) {
 
         {/* Image */}
         {offer_banner.image && (
-          <div className="relative w-full h-[55vh]">
+          <div className="relative w-full h-[60vh]">
             <Image
               src={offer_banner.image.url}
               alt={offer_banner.image.altText || offer_banner.title || 'Offer'}
@@ -65,23 +65,16 @@ export default function OfferBannerPopup({ banners }) {
               className="object-contain"
               priority
             />
-          </div>
-        )}
-
-        {/* Content */}
-        {(offer_banner.title || offer_banner.productHandle) && (
-          <div className="flex flex-col items-center gap-3 px-6 py-5 text-center">
-            {offer_banner.title && (
-              <h2 className="text-xl font-bold text-banner">{offer_banner.title}</h2>
-            )}
             {offer_banner.productHandle && (
-              <Link
-                href={`/shop/${offer_banner.productHandle}`}
-                onClick={close}
-                className="mt-1 bg-primary hover:bg-banner text-white font-semibold px-6 py-2.5 rounded-sm uppercase text-sm transition"
-              >
-                Shop Now
-              </Link>
+              <div className="absolute bottom-5 left-0 right-0 flex justify-center">
+                <Link
+                  href={`/shop/${offer_banner.productHandle}`}
+                  onClick={close}
+                  className="bg-primary hover:bg-banner text-white font-semibold px-8 py-3 uppercase text-sm tracking-wide transition shadow-lg"
+                >
+                  Shop Now
+                </Link>
+              </div>
             )}
           </div>
         )}

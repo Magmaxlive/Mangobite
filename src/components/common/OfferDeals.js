@@ -135,17 +135,14 @@ export default function OfferDeals({ banners }) {
             )}
 
             {/* Content below image */}
-            <div className="flex flex-col items-center gap-4 px-8 py-6 text-center bg-white">
-              {banner.title && (
-                <h2 className="text-2xl font-bold text-banner">{banner.title}</h2>
-              )}
+            <div className="flex flex-col items-center gap-3 px-8 py-4 text-center bg-white">
               {banner.productHandle && (
                 <Link
                   href={`/shop/${banner.productHandle}`}
                   onClick={close}
-                  className="bg-primary hover:bg-secondary text-white font-bold px-10 py-3 rounded-full uppercase text-sm tracking-widest transition shadow-md"
+                  className="btn-blink text-white font-bold px-12 py-3.5 uppercase text-sm tracking-widest shadow-xl rounded-full"
                 >
-                  Shop Now
+                  Order Now
                 </Link>
               )}
 

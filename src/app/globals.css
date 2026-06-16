@@ -71,3 +71,12 @@ body {
   background: transparent;
 }
 
+@keyframes btnBlink {
+  0%, 100% { background-color: #FF9308; }
+  50%       { background-color: #22c55e; }
+}
+
+.btn-blink {
+  animation: btnBlink 2.5s ease-in-out infinite;
+}
+
