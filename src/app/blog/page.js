@@ -1,9 +1,9 @@
+export const revalidate = 3600
+
 import { getArticles } from '@/lib/shopify'
 import PageBanner from '@/components/common/PageBanner'
 import Image from 'next/image'
 import Link from 'next/link'
-
-export const revalidate = 60
 
 export default async function BlogPage() {
   const articles = await getArticles()

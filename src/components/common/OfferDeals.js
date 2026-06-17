@@ -6,17 +6,24 @@ import Link from 'next/link'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
 
-export default function OfferDeals({ banners }) {
+export default function OfferDeals() {
   const { cartOpen } = useCart()
+  const [banners, setBanners] = useState([])
   const [open, setOpen] = useState(false)
   const [index, setIndex] = useState(0)
   const timerRef = useRef(null)
 
   useEffect(() => {
-    if (!banners?.length) return
-    const seen = sessionStorage.getItem('offer_banner_seen')
-    if (!seen) setOpen(true)
-  }, [banners])
+    fetch('/api/banners')
+      .then(r => r.json())
+      .then(data => {
+        if (!Array.isArray(data) || data.length === 0) return
+        setBanners(data)
+        const seen = sessionStorage.getItem('offer_banner_seen')
+        if (!seen) setOpen(true)
+      })
+      .catch(err => console.error('banners fetch error:', err))
+  }, [])
 
   useEffect(() => {
     if (!open || banners.length <= 1) return

@@ -6,7 +6,6 @@ import { CartProvider } from "@/context/CartContext";
 import CartDrawer from "@/components/common/CartDrawer";
 import WhatsApp from "@/components/common/WhatsApp";
 import OfferDeals from "@/components/common/OfferDeals";
-import { getOfferBanners } from "@/lib/shopify";
 
 
 const acme = Acme({
@@ -34,8 +33,6 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  const offerBanners = await getOfferBanners()
-
   return (
     <html
       lang="en"
@@ -141,12 +138,12 @@ export default async function RootLayout({ children }) {
       </head>
       <body className="min-h-full flex flex-col">
         <CartProvider>
-          <Header banners={offerBanners}/>
+          <Header />
           <CartDrawer/>
           {children}
           <WhatsApp/>
           <Footer/>
-          <OfferDeals banners={offerBanners} />
+          <OfferDeals />
         </CartProvider>
       </body>
     </html>

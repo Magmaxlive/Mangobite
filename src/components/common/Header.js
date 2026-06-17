@@ -12,14 +12,22 @@ import SearchModal from '@/components/common/SearchModal';
 import { FaFacebook,FaInstagram,FaPhoneAlt  } from "react-icons/fa";
 
 
-const Navbar = ({ banners = [] }) => {
+const Navbar = () => {
     const [drawerOpen,setDrawerOpen]=useState(false)
     const [scrolled,setScrolled]=useState(false)
+    const [banners,setBanners]=useState([])
     const pathname=usePathname()
     const { setCartOpen, itemCount } = useCart()
     const [searchOpen, setSearchOpen] = useState(false)
     const accountUrl = `https://${process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN}/account`
     const pollRef = useRef(null)
+
+    useEffect(() => {
+      fetch('/api/banners')
+        .then(r => r.json())
+        .then(data => { if (Array.isArray(data)) setBanners(data) })
+        .catch(() => {})
+    }, [])
 
     useEffect(()=>{
         const check = () => setScrolled(window.scrollY > 10)

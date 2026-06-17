@@ -1,9 +1,9 @@
+export const revalidate = 3600
+
 import { getProducts } from '@/lib/shopify'
 import PageBanner from '@/components/common/PageBanner'
 import ProductCard from '@/components/common/ProductCard'
 import { groupProductsByCategory } from '@/config/productOrder'
-
-export const revalidate = 0
 
 export const metadata = {
   title: 'Shop Fresh Indian Mangoes Online in New Zealand, Mango Bite',

@@ -1,11 +1,11 @@
+export const revalidate = 3600
+
 import { getArticle, getArticles } from '@/lib/shopify'
 import { notFound } from 'next/navigation'
 import PageBanner from '@/components/common/PageBanner'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ChevronLeft } from 'lucide-react'
-
-export const revalidate = 60
 
 export async function generateStaticParams() {
   const articles = await getArticles()

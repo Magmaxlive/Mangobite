@@ -1,11 +1,11 @@
+export const revalidate = 3600
+
 import { getProduct, getProducts } from '@/lib/shopify'
 import { notFound } from 'next/navigation'
 import PageBanner from '@/components/common/PageBanner'
 import ProductDetail from '@/components/common/ProductDetail'
 import Cards from '@/components/common/Cards'
 import SectionHeading from '@/components/common/SectionHeading'
-
-export const revalidate = 0
 
 export async function generateStaticParams() {
   const products = await getProducts()

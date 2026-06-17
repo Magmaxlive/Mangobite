@@ -4,7 +4,21 @@ const client = createStorefrontApiClient({
   storeDomain: process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN,
   apiVersion: '2025-07',
   publicAccessToken: process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN,
-  customFetchApi: (url, init) => fetch(url, { ...init, cache: 'no-store' }),
+  customFetchApi: (url, init) => {
+    // Inject a timestamp comment into the GraphQL query body so every request
+    // has a unique POST body, busting Shopify's CDN cache (keyed on body hash).
+    let patchedInit = init
+    if (init?.body) {
+      try {
+        const parsed = JSON.parse(init.body)
+        if (parsed.query) {
+          parsed.query = `# ${Date.now()}\n${parsed.query}`
+          patchedInit = { ...init, body: JSON.stringify(parsed) }
+        }
+      } catch {}
+    }
+    return fetch(url, { ...patchedInit, cache: 'no-store' })
+  },
 })
 
 // ─── Products ────────────────────────────────────────────────────────────────

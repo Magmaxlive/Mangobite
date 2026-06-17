@@ -1,4 +1,4 @@
-export const revalidate = 0
+export const revalidate = 3600
 
 import HeroSlider from '@/components/common/HeroSlider'
 import SectionHeading from '@/components/common/SectionHeading'
