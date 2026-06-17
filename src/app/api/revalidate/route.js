@@ -5,12 +5,13 @@ import crypto from 'crypto'
 const SECRET = process.env.SHOPIFY_WEBHOOK_SECRET
 
 function verifyHmac(body, hmacHeader) {
-  if (!SECRET) return true // skip in dev if secret not set
-  const digest = crypto
-    .createHmac('sha256', SECRET)
-    .update(body, 'utf8')
-    .digest('base64')
-  return crypto.timingSafeEqual(Buffer.from(digest), Buffer.from(hmacHeader))
+  if (!SECRET) return true
+  if (!hmacHeader) return false
+  const digest = crypto.createHmac('sha256', SECRET).update(body, 'utf8').digest('base64')
+  const a = Buffer.from(digest)
+  const b = Buffer.from(hmacHeader)
+  if (a.length !== b.length) return false
+  return crypto.timingSafeEqual(a, b)
 }
 
 export async function POST(req) {
