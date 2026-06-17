@@ -90,7 +90,7 @@ export default function OfferDeals({ banners }) {
           onClick={close}
         >
           <div
-            className="relative w-full max-w-md rounded-2xl overflow-hidden shadow-2xl bg-white"
+            className="relative w-full max-w-xl rounded-2xl overflow-hidden shadow-2xl bg-white"
             onClick={e => e.stopPropagation()}
           >
             {/* Close */}
@@ -141,7 +141,7 @@ export default function OfferDeals({ banners }) {
                 <Link
                   href={`/shop/${banner.productHandle}`}
                   onClick={close}
-                  className="btn-blink text-white font-bold px-12 py-3.5 uppercase text-sm tracking-widest shadow-xl rounded-full"
+                  className="btn-blink text-white font-bold md:px-12 md:py-3.5 px-8 py-2 uppercase text-sm tracking-widest shadow-xl rounded-full"
                 >
                   Order Now
                 </Link>
