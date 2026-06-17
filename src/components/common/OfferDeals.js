@@ -90,7 +90,7 @@ export default function OfferDeals({ banners }) {
           onClick={close}
         >
           <div
-            className="relative w-full max-w-2xl rounded-2xl overflow-hidden shadow-2xl bg-white"
+            className="relative w-full max-w-md rounded-2xl overflow-hidden shadow-2xl bg-white"
             onClick={e => e.stopPropagation()}
           >
             {/* Close */}
@@ -103,14 +103,15 @@ export default function OfferDeals({ banners }) {
 
             {/* Image */}
             {banner.image && (
-              <div className="relative w-full">
+              <div
+                className="relative w-full"
+                style={{ aspectRatio: `${banner.image.width || 4} / ${banner.image.height || 3}`, maxHeight: '65vh' }}
+              >
                 <Image
                   src={banner.image.url}
                   alt={banner.image.altText || banner.title || 'Offer'}
-                  width={banner.image.width || 800}
-                  height={banner.image.height || 800}
-                  className="w-full object-contain"
-                  style={{ height: 'auto', maxHeight: '55vh' }}
+                  fill
+                  className="object-contain"
                   priority
                 />
 
