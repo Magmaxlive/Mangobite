@@ -1,136 +1,121 @@
 import { createStorefrontApiClient } from '@shopify/storefront-api-client'
 
+// ─── Storefront API client (cart operations only) ─────────────────────────────
+
 const client = createStorefrontApiClient({
   storeDomain: process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN,
   apiVersion: '2025-07',
   publicAccessToken: process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN,
-  customFetchApi: (url, init) => {
-    // Inject a timestamp comment into the GraphQL query body so every request
-    // has a unique POST body, busting Shopify's CDN cache (keyed on body hash).
-    let patchedInit = init
-    if (init?.body) {
-      try {
-        const parsed = JSON.parse(init.body)
-        if (parsed.query) {
-          parsed.query = `# ${Date.now()}\n${parsed.query}`
-          patchedInit = { ...init, body: JSON.stringify(parsed) }
-        }
-      } catch {}
-    }
-    return fetch(url, { ...patchedInit, cache: 'no-store' })
-  },
+  customFetchApi: (url, init) => fetch(url, { ...init, cache: 'no-store' }),
 })
 
-// ─── Products ────────────────────────────────────────────────────────────────
+// ─── Admin API client (products, blogs, metaobjects — no CDN cache) ───────────
 
+let _adminToken = null
+let _adminTokenExpiry = 0
 
-export async function getProducts() {
-  const query = `{
-    products(first: 50) {
-      edges {
-        node {
-          id
-          title
-          handle
-          descriptionHtml
-          priceRange {
-            minVariantPrice { amount currencyCode }
-          }
-          images(first: 1) {
-            edges { node { url altText width height } }
-          }
-          media(first: 1) {
-            edges {
-              node {
-                mediaContentType
-                ... on Video {
-                  sources { url mimeType format }
-                  previewImage { url }
-                }
-                ... on MediaImage {
-                  image { url altText width height }
-                }
-              }
-            }
-          }
-          variants(first: 10) {
-            edges {
-              node {
-                id
-                title
-                availableForSale
-                quantityAvailable
-                currentlyNotInStock
-                price { amount currencyCode }
-                compareAtPrice { amount currencyCode }
-                selectedOptions { name value }
-              }
-            }
-          }
-          metafield(namespace: "custom", key: "unlimited_stock") { value }
+async function getAdminToken() {
+  if (_adminToken && Date.now() < _adminTokenExpiry) return _adminToken
+  const res = await fetch(
+    `https://${process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN}/admin/oauth/access_token`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        grant_type: 'client_credentials',
+        client_id: process.env.SHOPIFY_CLIENT_ID,
+        client_secret: process.env.SHOPIFY_CLIENT_SECRET,
+      }),
+      cache: 'no-store',
+    }
+  )
+  const data = await res.json()
+  _adminToken = data.access_token
+  _adminTokenExpiry = Date.now() + (data.expires_in - 300) * 1000
+  return _adminToken
+}
+
+async function adminRequest(query, variables = {}) {
+  const token = await getAdminToken()
+  const res = await fetch(
+    `https://${process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN}/admin/api/2025-07/graphql.json`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Access-Token': token,
+      },
+      body: JSON.stringify({ query, variables }),
+      cache: 'no-store',
+    }
+  )
+  return res.json()
+}
+
+// ─── Products ─────────────────────────────────────────────────────────────────
+
+const ADMIN_PRODUCT_FIELDS = `
+  id
+  title
+  handle
+  descriptionHtml
+  status
+  options { id name values }
+  metafield(namespace: "custom", key: "unlimited_stock") { value }
+  images(first: 1) { edges { node { url altText width height } } }
+  media(first: 10) {
+    edges {
+      node {
+        mediaContentType
+        ... on Video {
+          sources { url mimeType format }
+          preview { image { url } }
+        }
+        ... on MediaImage {
+          image { url altText width height }
         }
       }
     }
-  }`
+  }
+  variants(first: 20) {
+    edges {
+      node {
+        id
+        title
+        inventoryPolicy
+        inventoryQuantity
+        price
+        compareAtPrice
+        selectedOptions { name value }
+      }
+    }
+  }
+`
 
-  const { data, errors } = await client.request(query)
+export async function getProducts() {
+  const query = `{ products(first: 50, query: "status:active") { edges { node { ${ADMIN_PRODUCT_FIELDS} } } } }`
+  const { data, errors } = await adminRequest(query)
   if (errors) { console.error('getProducts error:', errors); return [] }
-  return data?.products?.edges?.map(({ node }) => normalizeProduct(node)) ?? []
+  return data?.products?.edges?.map(({ node }) => normalizeAdminProduct(node)) ?? []
 }
 
 export async function getProduct(handle) {
   const query = `
     query GetProduct($handle: String!) {
-      product(handle: $handle) {
-        id
-        title
-        handle
-        descriptionHtml
-        priceRange {
-          minVariantPrice { amount currencyCode }
-        }
-        media(first: 10) {
-          edges {
-            node {
-              mediaContentType
-              ... on Video {
-                sources { url mimeType format }
-                previewImage { url }
-              }
-              ... on MediaImage {
-                image { url altText width height }
-              }
-            }
-          }
-        }
-        variants(first: 20) {
-          edges {
-            node {
-              id
-              title
-              availableForSale
-              quantityAvailable
-              currentlyNotInStock
-              price { amount currencyCode }
-              compareAtPrice { amount currencyCode }
-              selectedOptions { name value }
-            }
-          }
-        }
-        options { id name values }
-        metafield(namespace: "custom", key: "unlimited_stock") { value }
-      }
+      productByHandle(handle: $handle) { ${ADMIN_PRODUCT_FIELDS} }
     }
   `
-  const { data, errors } = await client.request(query, { variables: { handle } })
+  const { data, errors } = await adminRequest(query, { handle })
   if (errors) { console.error('getProduct error:', errors); return null }
-  return data?.product ? normalizeProduct(data.product) : null
+  const node = data?.productByHandle
+  if (!node || node.status !== 'ACTIVE') return null
+  return normalizeAdminProduct(node)
 }
 
-function normalizeMediaItem(node) {
+function normalizeAdminMediaItem(node) {
   if (node.mediaContentType === 'VIDEO') {
     const mp4 = node.sources?.find(s => s.mimeType === 'video/mp4' || s.format === 'mp4') ?? node.sources?.[0]
-    return { type: 'video', videoUrl: mp4?.url ?? '', previewUrl: node.previewImage?.url ?? '' }
+    return { type: 'video', videoUrl: mp4?.url ?? '', previewUrl: node.preview?.image?.url ?? '' }
   }
   return {
     type: 'image',
@@ -141,21 +126,38 @@ function normalizeMediaItem(node) {
   }
 }
 
-function normalizeProduct(node) {
-  const media = node.media?.edges?.map(({ node: m }) => normalizeMediaItem(m)) ?? []
+function normalizeAdminVariant(v) {
+  const unlimited = v.inventoryPolicy === 'CONTINUE'
+  const qty = v.inventoryQuantity ?? 0
+  return {
+    id: v.id,
+    title: v.title,
+    availableForSale: unlimited || qty > 0,
+    quantityAvailable: qty,
+    currentlyNotInStock: unlimited && qty <= 0,
+    price: { amount: v.price, currencyCode: 'NZD' },
+    compareAtPrice: v.compareAtPrice ? { amount: v.compareAtPrice, currencyCode: 'NZD' } : null,
+    selectedOptions: v.selectedOptions,
+  }
+}
+
+function normalizeAdminProduct(node) {
+  if (!node) return null
+  const media = node.media?.edges?.map(({ node: m }) => normalizeAdminMediaItem(m)) ?? []
   const fallbackImage = node.images?.edges?.[0]?.node
   if (media.length === 0 && fallbackImage) {
     media.push({ type: 'image', url: fallbackImage.url, altText: fallbackImage.altText ?? '', width: fallbackImage.width ?? 800, height: fallbackImage.height ?? 800 })
   }
+  const variants = node.variants?.edges?.map(({ node: v }) => normalizeAdminVariant(v)) ?? []
   return {
     id: node.id,
     title: node.title,
     handle: node.handle,
     descriptionHtml: node.descriptionHtml,
-    price: node.priceRange?.minVariantPrice,
+    price: variants[0]?.price ?? { amount: '0', currencyCode: 'NZD' },
     media,
     images: media.filter(m => m.type === 'image'),
-    variants: node.variants?.edges?.map(({ node: v }) => v) ?? [],
+    variants,
     options: node.options ?? [],
     unlimited: node.metafield?.value === 'true',
   }
@@ -164,18 +166,23 @@ function normalizeProduct(node) {
 export async function getVariantAvailability(variantId) {
   const query = `
     query GetVariant($id: ID!) {
-      node(id: $id) {
-        ... on ProductVariant {
-          availableForSale
-          quantityAvailable
-          currentlyNotInStock
-        }
+      productVariant(id: $id) {
+        inventoryPolicy
+        inventoryQuantity
       }
     }
   `
-  const { data, errors } = await client.request(query, { variables: { id: variantId } })
+  const { data, errors } = await adminRequest(query, { id: variantId })
   if (errors) return null
-  return data?.node ?? null
+  const v = data?.productVariant
+  if (!v) return null
+  const unlimited = v.inventoryPolicy === 'CONTINUE'
+  const qty = v.inventoryQuantity ?? 0
+  return {
+    availableForSale: unlimited || qty > 0,
+    quantityAvailable: qty,
+    currentlyNotInStock: unlimited && qty <= 0,
+  }
 }
 
 // ─── Cart ─────────────────────────────────────────────────────────────────────
@@ -340,16 +347,19 @@ export async function getArticles() {
           excerpt
           publishedAt
           image { url altText width height }
-          author { name }
+          authorV2 { name }
           blog { handle title }
           tags
         }
       }
     }
   }`
-  const { data, errors } = await client.request(query)
+  const { data, errors } = await adminRequest(query)
   if (errors) { console.error('getArticles error:', errors); return [] }
-  return data?.articles?.edges?.map(({ node }) => node) ?? []
+  return (data?.articles?.edges?.map(({ node }) => ({
+    ...node,
+    author: node.authorV2,
+  })) ?? [])
 }
 
 export async function getArticle(blogHandle, articleHandle) {
@@ -364,15 +374,17 @@ export async function getArticle(blogHandle, articleHandle) {
           excerpt
           publishedAt
           image { url altText width height }
-          author { name }
+          authorV2 { name }
           tags
         }
       }
     }
   `
-  const { data, errors } = await client.request(query, { variables: { blogHandle, articleHandle } })
+  const { data, errors } = await adminRequest(query, { blogHandle, articleHandle })
   if (errors) { console.error('getArticle error:', errors); return null }
-  return data?.blog?.articleByHandle ?? null
+  const node = data?.blog?.articleByHandle
+  if (!node) return null
+  return { ...node, author: node.authorV2 }
 }
 
 export async function searchProducts(query) {
@@ -403,6 +415,8 @@ export async function searchProducts(query) {
   }))
 }
 
+// ─── Metaobjects ──────────────────────────────────────────────────────────────
+
 export async function getOfferBanners() {
   const query = `{
     metaobjects(type: "offer_banner", first: 10) {
@@ -413,37 +427,28 @@ export async function getOfferBanners() {
             key
             value
             reference {
-              ... on MediaImage {
-                image { url altText width height }
-              }
-              ... on Product {
-                handle
-                title
-              }
+              ... on MediaImage { image { url altText width height } }
+              ... on Product { handle title }
             }
           }
         }
       }
     }
   }`
-
-  const { data, errors } = await client.request(query)
+  const { data, errors } = await adminRequest(query)
   if (errors) { console.error('getOfferBanners error:', errors); return [] }
-
-  return (
-    data?.metaobjects?.edges?.map(({ node }) => {
-      const field = (key) => node.fields.find(f => f.key === key)
-      const imageField = field('banner')
-      const productField = field('product')
-      return {
-        id: node.id,
-        title: field('offer_text')?.value ?? null,
-        productHandle: productField?.reference?.handle ?? null,
-        productTitle: productField?.reference?.title ?? null,
-        image: imageField?.reference?.image ?? null,
-      }
-    }).filter(b => b.image) ?? []
-  )
+  return (data?.metaobjects?.edges?.map(({ node }) => {
+    const field = (key) => node.fields.find(f => f.key === key)
+    const imageField = field('banner')
+    const productField = field('product')
+    return {
+      id: node.id,
+      title: field('offer_text')?.value ?? null,
+      productHandle: productField?.reference?.handle ?? null,
+      productTitle: productField?.reference?.title ?? null,
+      image: imageField?.reference?.image ?? null,
+    }
+  }).filter(b => b.image) ?? [])
 }
 
 export async function getGalleryImages() {
@@ -456,40 +461,23 @@ export async function getGalleryImages() {
             key
             value
             reference {
-              ... on MediaImage {
-                image {
-                  url
-                  altText
-                  width
-                  height
-                }
-              }
+              ... on MediaImage { image { url altText width height } }
             }
           }
         }
       }
     }
   }`
-
-  const { data, errors } = await client.request(query)
-
-  if (errors) {
-    console.error('Shopify gallery fetch error:', errors)
-    return []
-  }
-
-  return (
-    data?.metaobjects?.edges
-      ?.map(({ node }) => {
-        const imageField = node.fields.find(f => f.key === 'image')
-        return {
-          id: node.id,
-          url: imageField?.reference?.image?.url,
-          altText: imageField?.reference?.image?.altText || '',
-          width: imageField?.reference?.image?.width || 800,
-          height: imageField?.reference?.image?.height || 800,
-        }
-      })
-      .filter(item => item.url) || []
-  )
+  const { data, errors } = await adminRequest(query)
+  if (errors) { console.error('getGalleryImages error:', errors); return [] }
+  return (data?.metaobjects?.edges?.map(({ node }) => {
+    const imageField = node.fields.find(f => f.key === 'image')
+    return {
+      id: node.id,
+      url: imageField?.reference?.image?.url,
+      altText: imageField?.reference?.image?.altText || '',
+      width: imageField?.reference?.image?.width || 800,
+      height: imageField?.reference?.image?.height || 800,
+    }
+  }).filter(item => item.url) ?? [])
 }
