@@ -84,6 +84,7 @@ const ADMIN_PRODUCT_FIELDS = `
         title
         inventoryPolicy
         inventoryQuantity
+        inventoryItem { tracked }
         price
         compareAtPrice
         selectedOptions { name value }
@@ -127,14 +128,19 @@ function normalizeAdminMediaItem(node) {
 }
 
 function normalizeAdminVariant(v) {
-  const unlimited = v.inventoryPolicy === 'CONTINUE'
+  const tracked = v.inventoryItem?.tracked ?? true
+  const oversell = v.inventoryPolicy === 'CONTINUE'
   const qty = v.inventoryQuantity ?? 0
+  // Not tracked = always available (like unlimited stock)
+  const availableForSale = !tracked || oversell || qty > 0
+  const quantityAvailable = tracked ? qty : null
+  const currentlyNotInStock = tracked && oversell && qty <= 0
   return {
     id: v.id,
     title: v.title,
-    availableForSale: unlimited || qty > 0,
-    quantityAvailable: qty,
-    currentlyNotInStock: unlimited && qty <= 0,
+    availableForSale,
+    quantityAvailable,
+    currentlyNotInStock,
     price: { amount: v.price, currencyCode: 'NZD' },
     compareAtPrice: v.compareAtPrice ? { amount: v.compareAtPrice, currencyCode: 'NZD' } : null,
     selectedOptions: v.selectedOptions,
@@ -169,6 +175,7 @@ export async function getVariantAvailability(variantId) {
       productVariant(id: $id) {
         inventoryPolicy
         inventoryQuantity
+        inventoryItem { tracked }
       }
     }
   `
@@ -176,12 +183,13 @@ export async function getVariantAvailability(variantId) {
   if (errors) return null
   const v = data?.productVariant
   if (!v) return null
-  const unlimited = v.inventoryPolicy === 'CONTINUE'
+  const tracked = v.inventoryItem?.tracked ?? true
+  const oversell = v.inventoryPolicy === 'CONTINUE'
   const qty = v.inventoryQuantity ?? 0
   return {
-    availableForSale: unlimited || qty > 0,
-    quantityAvailable: qty,
-    currentlyNotInStock: unlimited && qty <= 0,
+    availableForSale: !tracked || oversell || qty > 0,
+    quantityAvailable: tracked ? qty : null,
+    currentlyNotInStock: tracked && oversell && qty <= 0,
   }
 }
 
