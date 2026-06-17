@@ -1,4 +1,4 @@
-export const revalidate = 3600
+export const dynamic = 'force-dynamic'
 
 import HeroSlider from '@/components/common/HeroSlider'
 import SectionHeading from '@/components/common/SectionHeading'
