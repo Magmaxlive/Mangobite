@@ -172,25 +172,18 @@ function normalizeAdminProduct(node) {
 export async function getVariantAvailability(variantId) {
   const query = `
     query GetVariant($id: ID!) {
-      productVariant(id: $id) {
-        inventoryPolicy
-        inventoryQuantity
-        inventoryItem { tracked }
+      node(id: $id) {
+        ... on ProductVariant {
+          availableForSale
+          quantityAvailable
+          currentlyNotInStock
+        }
       }
     }
   `
-  const { data, errors } = await adminRequest(query, { id: variantId })
+  const { data, errors } = await client.request(query, { variables: { id: variantId } })
   if (errors) return null
-  const v = data?.productVariant
-  if (!v) return null
-  const tracked = v.inventoryItem?.tracked ?? true
-  const oversell = v.inventoryPolicy === 'CONTINUE'
-  const qty = v.inventoryQuantity ?? 0
-  return {
-    availableForSale: !tracked || oversell || qty > 0,
-    quantityAvailable: tracked ? qty : null,
-    currentlyNotInStock: tracked && oversell && qty <= 0,
-  }
+  return data?.node ?? null
 }
 
 // ─── Cart ─────────────────────────────────────────────────────────────────────
