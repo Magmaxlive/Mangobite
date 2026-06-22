@@ -145,9 +145,9 @@ export default function ProductDetail({ product }) {
                   {fmt(selectedVariant.compareAtPrice.amount, selectedVariant.compareAtPrice.currencyCode)}
                 </span>
               )}
-              <span className={`text-xs font-semibold px-2 py-1 rounded-full ${!available ? 'bg-gray-100 text-gray-500' : isPreOrder ? 'bg-orange-100 text-orange-600' : 'bg-green-100 text-green-700'}`}>
+              {/* <span className={`text-xs font-semibold px-2 py-1 rounded-full ${!available ? 'bg-gray-100 text-gray-500' : isPreOrder ? 'bg-orange-100 text-orange-600' : 'bg-green-100 text-green-700'}`}>
                 {!available ? 'Sold Out' : isPreOrder ? 'Pre Order' : 'In Stock'}
-              </span>
+              </span> */}
             </div>
           </div>
 

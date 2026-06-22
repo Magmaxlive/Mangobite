@@ -4,7 +4,12 @@
       "Read(//c/Users/devel/.claude/projects/c--Users-devel-OneDrive-Desktop-mangobite-nextjs/**)",
       "Bash(git add *)",
       "Bash(git commit -m ' *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(for f *)",
+      "Read(//c/Users/devel/OneDrive/Desktop/**)",
+      "Bash(curl -s -X POST https://mangobitemagmax.myshopify.com/api/2025-07/graphql.json -H 'Content-Type: application/json' -H 'X-Shopify-Storefront-Access-Token: 5152ab79cb57066e9ec8217a2d63e924' -H 'Shopify-Storefront-Buyer-IP: 1.2.3.4' -d '{\"query\":\"{ product\\(handle: \\\\\"banganapalli-mango-twin-box-deal\\\\\"\\) { title variants\\(first: 5\\) { edges { node { title price { amount } compareAtPrice { amount } } } } } }\"}')",
+      "Bash(curl -s -X POST https://mangobitemagmax.myshopify.com/api/2025-07/graphql.json -H 'Content-Type: application/json' -H 'X-Shopify-Storefront-Access-Token: 5152ab79cb57066e9ec8217a2d63e924' -d '{\"query\":\"# __CMDSUB_OUTPUT__\\\\n{ product\\(handle: \\\\\"banganapalli-mango-twin-box-deal\\\\\"\\) { title variants\\(first: 5\\) { edges { node { title price { amount } compareAtPrice { amount } } } } } }\"}')",
+      "Bash(curl -s -X POST https://mangobitemagmax.myshopify.com/api/2025-07/graphql.json -H 'Content-Type: application/json' -H 'X-Shopify-Storefront-Access-Token: 5152ab79cb57066e9ec8217a2d63e924' -d '{\"query\":\"{ product\\(handle: \\\\\"banganapalli-mango-twin-box-deal\\\\\"\\) { title variants\\(first: 5\\) { edges { node { price { amount } compareAtPrice { amount } } } } } }\"}')"
     ]
   }
 }

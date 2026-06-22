@@ -49,7 +49,7 @@ export default function ProductCard({ product }) {
           </div>
         )}
 
-        <div className="absolute top-3 left-3">
+        {/* <div className="absolute top-3 left-3">
           {!available ? (
             <span className="text-[10px] font-bold uppercase tracking-widest text-white bg-gray-400 px-2 py-1 rounded-sm">Sold Out</span>
           ) : isPreOrder ? (
@@ -57,7 +57,7 @@ export default function ProductCard({ product }) {
           ) : (
             <span className="text-[10px] font-bold uppercase tracking-widest text-white bg-secondary px-2 py-1 rounded-sm">In Stock</span>
           )}
-        </div>
+        </div> */}
       </Link>
 
       {/* Info */}
