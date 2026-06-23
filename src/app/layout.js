@@ -41,6 +41,16 @@ export default async function RootLayout({ children }) {
     >
       <head>
 
+       
+      <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18259401013"></script>
+      <script>
+        {`window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'AW-18259401013');`}
+      </script>
+
         {/* local schema */}
         <script  type="application/ld+json"
           dangerouslySetInnerHTML={{
