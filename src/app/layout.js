@@ -167,7 +167,7 @@ export default async function RootLayout({ children }) {
       <body className="min-h-full flex flex-col">
         <noscript>
           <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N7PD6R5B"
-          height="0" width="0" style="display:none;visibility:hidden">
+          height="0" width="0" style={{display:'none',visibility:'hidden'}}>
             </iframe>
         </noscript>
         
