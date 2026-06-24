@@ -366,24 +366,27 @@ export async function getArticles() {
 
 export async function getArticle(blogHandle, articleHandle) {
   const query = `
-    query GetArticle($blogHandle: String!, $articleHandle: String!) {
-      blog(handle: $blogHandle) {
-        articleByHandle(handle: $articleHandle) {
-          id
-          title
-          handle
-          body
-          publishedAt
-          image { url altText width height }
-          author { name }
-          tags
+    query GetArticle($query: String!) {
+      articles(first: 1, query: $query) {
+        edges {
+          node {
+            id
+            title
+            handle
+            body
+            publishedAt
+            image { url altText width height }
+            author { name }
+            blog { handle title }
+            tags
+          }
         }
       }
     }
   `
-  const { data, errors } = await adminRequest(query, { blogHandle, articleHandle })
+  const { data, errors } = await adminRequest(query, { query: `handle:${articleHandle}` })
   if (errors) { console.error('getArticle error:', errors); return null }
-  const node = data?.blog?.articleByHandle
+  const node = data?.articles?.edges?.[0]?.node
   if (!node) return null
   return { ...node, contentHtml: node.body, excerpt: node.body?.replace(/<[^>]*>/g, '').slice(0, 160) ?? '', author: node.author }
 }
