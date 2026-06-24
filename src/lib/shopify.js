@@ -345,7 +345,7 @@ export async function getArticles() {
           id
           title
           handle
-          excerptHtml
+          body
           publishedAt
           image { url altText width height }
           authorV2 { name }
@@ -359,7 +359,7 @@ export async function getArticles() {
   if (errors) { console.error('getArticles error:', errors); return [] }
   return (data?.articles?.edges?.map(({ node }) => ({
     ...node,
-    excerpt: node.excerptHtml?.replace(/<[^>]*>/g, '') ?? '',
+    excerpt: node.body?.replace(/<[^>]*>/g, '').slice(0, 160) ?? '',
     author: node.authorV2,
   })) ?? [])
 }
@@ -373,7 +373,7 @@ export async function getArticle(blogHandle, articleHandle) {
           title
           handle
           contentHtml
-          excerptHtml
+          body
           publishedAt
           image { url altText width height }
           authorV2 { name }
@@ -386,7 +386,7 @@ export async function getArticle(blogHandle, articleHandle) {
   if (errors) { console.error('getArticle error:', errors); return null }
   const node = data?.blog?.articleByHandle
   if (!node) return null
-  return { ...node, excerpt: node.excerptHtml?.replace(/<[^>]*>/g, '') ?? '', author: node.authorV2 }
+  return { ...node, excerpt: node.body?.replace(/<[^>]*>/g, '').slice(0, 160) ?? '', author: node.authorV2 }
 }
 
 export async function searchProducts(query) {
