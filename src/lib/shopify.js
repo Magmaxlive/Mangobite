@@ -372,7 +372,6 @@ export async function getArticle(blogHandle, articleHandle) {
           id
           title
           handle
-          contentHtml
           body
           publishedAt
           image { url altText width height }
@@ -386,7 +385,7 @@ export async function getArticle(blogHandle, articleHandle) {
   if (errors) { console.error('getArticle error:', errors); return null }
   const node = data?.blog?.articleByHandle
   if (!node) return null
-  return { ...node, excerpt: node.body?.replace(/<[^>]*>/g, '').slice(0, 160) ?? '', author: node.author }
+  return { ...node, contentHtml: node.body, excerpt: node.body?.replace(/<[^>]*>/g, '').slice(0, 160) ?? '', author: node.author }
 }
 
 export async function searchProducts(query) {
