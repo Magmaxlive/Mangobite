@@ -1,6 +1,6 @@
 export const ROWS = [
   { label: 'Top Sellers',        keywords: ['kesar', 'banganapalli', 'alphonso'] },
-  { label: 'Customer Favorites', keywords: ['himayat', 'mallika', 'langda', 'dasheri', 'rajapuri', 'chaunsa'] },
+  { label: 'Customer Favorites', keywords: ['himayat', 'mallika', 'langda', 'dasheri', 'rajapuri', 'chausa','rumani'] },
   { label: 'Popular Picks',      keywords: ['sindhuri', 'totapuri', 'chinna rasallu', 'pedda rasallu', 'cheruku rasalu'] },
   // { label: 'More Varieties',     keywords: ['payri', 'malgova', 'tella gulabeelu', 'avakai', 'himasagar', 'lakshman bhog', 'rajnath'] },
 ]
