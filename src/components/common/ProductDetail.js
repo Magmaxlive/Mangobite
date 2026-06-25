@@ -22,7 +22,7 @@ export default function ProductDetail({ product }) {
   const available = localAvailable ?? (selectedVariant?.availableForSale ?? false)
   const cartQty = getCartQty(selectedVariant?.id)
   const isPreOrder = (product.preOrder && available) || (available && selectedVariant?.currentlyNotInStock === true)
-  const maxQty = (product.unlimited || isPreOrder) ? Infinity : (selectedVariant?.quantityAvailable ?? Infinity)
+  const maxQty = isPreOrder ? Infinity : (selectedVariant?.quantityAvailable ?? Infinity)
   const canAdd = available && cartQty < maxQty
   const hasMultipleVariants = product.variants.length > 1 && product.variants[0]?.title !== 'Default Title'
   const currentMedia = allMedia[mediaIndex]
@@ -30,7 +30,7 @@ export default function ProductDetail({ product }) {
   const handleAddToCart = async () => {
     if (!canAdd || !selectedVariant) return
     setAddError(null)
-    const result = await addItem(selectedVariant.id, qty, product.unlimited)
+    const result = await addItem(selectedVariant.id, qty)
     if (result && result.startsWith('Only ')) {
       setAddError(result)
       setAdded(true)

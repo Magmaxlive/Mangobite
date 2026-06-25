@@ -31,7 +31,7 @@ export function CartProvider({ children }) {
     return c
   }, [cart])
 
-  const addItem = useCallback(async (variantId, quantity = 1, unlimited = false) => {
+  const addItem = useCallback(async (variantId, quantity = 1) => {
     setLoading(true)
     try {
       const c = await ensureCart()
@@ -41,7 +41,7 @@ export function CartProvider({ children }) {
         return 'Sorry, this product is currently out of stock.'
       }
       let stockWarning = null
-      if (!unlimited && liveVariant && !liveVariant.currentlyNotInStock && liveVariant.quantityAvailable !== null) {
+      if (liveVariant && !liveVariant.currentlyNotInStock && liveVariant.quantityAvailable !== null) {
         const currentCartQty = cart?.lines?.find(l => l.variantId === variantId)?.quantity ?? 0
         const remaining = liveVariant.quantityAvailable - currentCartQty
         if (remaining <= 0) return 'Sorry, this product is currently out of stock.'

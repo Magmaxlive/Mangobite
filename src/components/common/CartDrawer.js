@@ -15,7 +15,7 @@ export default function CartDrawer() {
     new Intl.NumberFormat('en-NZ', { style: 'currency', currency: currency || 'NZD' }).format(amount)
 
   const handleIncrement = async (line) => {
-    if (line.unlimited || line.preOrder || line.currentlyNotInStock) {
+    if (line.preOrder || line.currentlyNotInStock) {
       const err = await updateItem(line.id, line.quantity + 1)
       setLineErrors(prev => ({ ...prev, [line.id]: err || null }))
       return

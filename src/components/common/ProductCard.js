@@ -15,7 +15,7 @@ export default function ProductCard({ product }) {
   const available = localAvailable ?? (firstVariant?.availableForSale ?? false)
   const cartQty = getCartQty(firstVariant?.id)
   const isPreOrder = (product.preOrder && available) || (available && firstVariant?.currentlyNotInStock === true)
-  const maxQty = (product.unlimited || isPreOrder) ? Infinity : (firstVariant?.quantityAvailable ?? Infinity)
+  const maxQty = isPreOrder ? Infinity : (firstVariant?.quantityAvailable ?? Infinity)
   const canAdd = available && cartQty < maxQty
 
   const fmt = (amount, currency) =>
@@ -86,7 +86,7 @@ export default function ProductCard({ product }) {
           <button
             onClick={async () => {
               setAddError(null)
-              const err = await addItem(firstVariant.id, 1, product.unlimited)
+              const err = await addItem(firstVariant.id, 1)
               if (err) { setAddError(err); setLocalAvailable(false) }
             }}
             disabled={loading}
