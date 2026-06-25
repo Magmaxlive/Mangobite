@@ -13,7 +13,7 @@ export default function ProductCard({ product }) {
   const firstMedia = product.media?.[0]
   const firstVariant = product.variants[0]
   const isPreOrder = product.preOrder
-  const available = isPreOrder ? true : (localAvailable ?? (firstVariant?.availableForSale ?? false))
+  const available = isPreOrder ? true : product.soldOut ? false : (localAvailable ?? (firstVariant?.availableForSale ?? false))
   const cartQty = getCartQty(firstVariant?.id)
   const maxQty = (product.unlimited || isPreOrder) ? Infinity : (firstVariant?.quantityAvailable ?? Infinity)
   const canAdd = available && cartQty < maxQty

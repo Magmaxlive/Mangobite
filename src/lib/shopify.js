@@ -167,6 +167,7 @@ function normalizeAdminProduct(node) {
     variants,
     options: node.options ?? [],
     unlimited: node.unlimitedStockMeta?.value === 'true',
+    soldOut: node.unlimitedStockMeta?.value === 'false',
     preOrder: node.preOrderMeta?.value === 'true',
   }
 }
