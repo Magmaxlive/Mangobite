@@ -21,6 +21,19 @@ export function CartProvider({ children }) {
     }
   }, [])
 
+  useEffect(() => {
+    if (!cart) return
+    const soldOutLines = cart.lines?.filter(l => l.soldOut) ?? []
+    if (soldOutLines.length === 0) return
+    Promise.all(soldOutLines.map(l => removeCartLine(cart.id, [l.id]))).then(results => {
+      const last = results.filter(Boolean).pop()
+      if (last) {
+        setCart(last)
+        setCartWarning(`${soldOutLines.length} sold out item${soldOutLines.length > 1 ? 's were' : ' was'} removed from your cart.`)
+      }
+    })
+  }, [cart?.id, cart?.lines?.map(l => l.id + l.soldOut).join()])
+
   const ensureCart = useCallback(async () => {
     if (cart) return cart
     const c = await createCart()
