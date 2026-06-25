@@ -329,6 +329,7 @@ function normalizeCart(cart) {
       quantityAvailable: node.merchandise?.quantityAvailable ?? null,
       currentlyNotInStock: node.merchandise?.currentlyNotInStock ?? false,
       unlimited: node.merchandise?.product?.unlimitedStockMeta?.value === 'true',
+      soldOut: node.merchandise?.product?.unlimitedStockMeta?.value === 'false',
       preOrder: node.merchandise?.product?.preOrderMeta?.value === 'true',
       product: {
         title: node.merchandise?.product?.title,
