@@ -19,9 +19,9 @@ export default function ProductDetail({ product }) {
     new Intl.NumberFormat('en-NZ', { style: 'currency', currency: currency || 'NZD' }).format(amount)
 
   const allMedia = product.media ?? []
-  const isPreOrder = product.preOrder
-  const available = isPreOrder ? true : product.soldOut ? false : (localAvailable ?? (selectedVariant?.availableForSale ?? false))
+  const available = localAvailable ?? (selectedVariant?.availableForSale ?? false)
   const cartQty = getCartQty(selectedVariant?.id)
+  const isPreOrder = available && selectedVariant?.currentlyNotInStock === true
   const maxQty = (product.unlimited || isPreOrder) ? Infinity : (selectedVariant?.quantityAvailable ?? Infinity)
   const canAdd = available && cartQty < maxQty
   const hasMultipleVariants = product.variants.length > 1 && product.variants[0]?.title !== 'Default Title'
@@ -30,7 +30,7 @@ export default function ProductDetail({ product }) {
   const handleAddToCart = async () => {
     if (!canAdd || !selectedVariant) return
     setAddError(null)
-    const result = await addItem(selectedVariant.id, qty, product.unlimited, product.preOrder)
+    const result = await addItem(selectedVariant.id, qty, product.unlimited)
     if (result && result.startsWith('Only ')) {
       setAddError(result)
       setAdded(true)

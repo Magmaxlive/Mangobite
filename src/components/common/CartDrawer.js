@@ -15,12 +15,7 @@ export default function CartDrawer() {
     new Intl.NumberFormat('en-NZ', { style: 'currency', currency: currency || 'NZD' }).format(amount)
 
   const handleIncrement = async (line) => {
-    if (line.soldOut) {
-      setLineErrors(prev => ({ ...prev, [line.id]: 'This product is currently sold out.' }))
-      setTimeout(() => setLineErrors(prev => ({ ...prev, [line.id]: null })), 3000)
-      return
-    }
-    if (line.unlimited || line.preOrder || line.currentlyNotInStock) {
+    if (line.unlimited || line.currentlyNotInStock) {
       const err = await updateItem(line.id, line.quantity + 1)
       setLineErrors(prev => ({ ...prev, [line.id]: err || null }))
       return

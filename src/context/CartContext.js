@@ -21,19 +21,6 @@ export function CartProvider({ children }) {
     }
   }, [])
 
-  useEffect(() => {
-    if (!cart) return
-    const soldOutLines = cart.lines?.filter(l => l.soldOut) ?? []
-    if (soldOutLines.length === 0) return
-    Promise.all(soldOutLines.map(l => removeCartLine(cart.id, [l.id]))).then(results => {
-      const last = results.filter(Boolean).pop()
-      if (last) {
-        setCart(last)
-        setCartWarning(`${soldOutLines.length} sold out item${soldOutLines.length > 1 ? 's were' : ' was'} removed from your cart.`)
-      }
-    })
-  }, [cart?.id, cart?.lines?.map(l => l.id + l.soldOut).join()])
-
   const ensureCart = useCallback(async () => {
     if (cart) return cart
     const c = await createCart()
@@ -44,13 +31,13 @@ export function CartProvider({ children }) {
     return c
   }, [cart])
 
-  const addItem = useCallback(async (variantId, quantity = 1, unlimited = false, preOrder = false) => {
+  const addItem = useCallback(async (variantId, quantity = 1, unlimited = false) => {
     setLoading(true)
     try {
       const c = await ensureCart()
       if (!c) return 'Could not create cart. Please try again.'
       const liveVariant = await getVariantAvailability(variantId)
-      if (!preOrder && liveVariant && !liveVariant.availableForSale) {
+      if (liveVariant && !liveVariant.availableForSale) {
         return 'Sorry, this product is currently out of stock.'
       }
       let stockWarning = null
