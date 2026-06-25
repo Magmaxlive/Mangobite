@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState, useCallback } from 'react'
-import { createCart, getCart, addToCart, updateCartLine, removeCartLine, getVariantAvailability } from '@/lib/shopify'
+import { createCart, getCart, addToCart, updateCartLine, removeCartLine } from '@/lib/shopify'
 
 const CartContext = createContext(null)
 
@@ -36,20 +36,7 @@ export function CartProvider({ children }) {
     try {
       const c = await ensureCart()
       if (!c) return 'Could not create cart. Please try again.'
-      const liveVariant = await getVariantAvailability(variantId)
-      if (liveVariant && !liveVariant.availableForSale) {
-        return 'Sorry, this product is currently out of stock.'
-      }
       let stockWarning = null
-      if (liveVariant && !liveVariant.currentlyNotInStock && liveVariant.quantityAvailable !== null) {
-        const currentCartQty = cart?.lines?.find(l => l.variantId === variantId)?.quantity ?? 0
-        const remaining = liveVariant.quantityAvailable - currentCartQty
-        if (remaining <= 0) return 'Sorry, this product is currently out of stock.'
-        if (quantity > remaining) {
-          quantity = remaining
-          stockWarning = `Only ${remaining} item${remaining !== 1 ? 's' : ''} available. Added ${remaining} to your cart.`
-        }
-      }
       let { cart: updated, userErrors } = await addToCart(c.id, [{ merchandiseId: variantId, quantity }])
 
       // Cart expired — create a fresh one and retry
