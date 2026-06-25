@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic'
+export const revalidate = 60
 
 import { getProduct, getProducts } from '@/lib/shopify'
 import { notFound } from 'next/navigation'

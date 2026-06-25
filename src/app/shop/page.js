@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic'
+export const revalidate = 60
 
 import { getProducts } from '@/lib/shopify'
 import PageBanner from '@/components/common/PageBanner'

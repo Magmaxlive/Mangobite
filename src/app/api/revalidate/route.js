@@ -24,7 +24,7 @@ export async function POST(req) {
 
   const topic = req.headers.get('x-shopify-topic') ?? ''
 
-  if (topic.startsWith('products/') || topic.startsWith('collections/')) {
+  if (topic.startsWith('products/') || topic.startsWith('collections/') || topic.startsWith('inventory_items/')) {
     revalidatePath('/', 'page')
     revalidatePath('/shop', 'page')
     revalidatePath('/shop/[handle]', 'page')
