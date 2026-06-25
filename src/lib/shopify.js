@@ -62,6 +62,7 @@ const ADMIN_PRODUCT_FIELDS = `
   status
   options { id name values }
   metafield(namespace: "custom", key: "unlimited_stock") { value }
+  preOrderMeta: metafield(namespace: "custom", key: "enable_pre_order_option") { value }
   images(first: 1) { edges { node { url altText width height } } }
   media(first: 10) {
     edges {
@@ -166,6 +167,7 @@ function normalizeAdminProduct(node) {
     variants,
     options: node.options ?? [],
     unlimited: node.metafield?.value === 'true',
+    preOrder: node.preOrderMeta?.value === 'true',
   }
 }
 
@@ -305,6 +307,7 @@ const LINE_FRAGMENT = `
           handle
           images(first: 1) { edges { node { url altText } } }
           metafield(namespace: "custom", key: "unlimited_stock") { value }
+          preOrderMeta: metafield(namespace: "custom", key: "enable_pre_order_option") { value }
         }
       }
     }
@@ -325,6 +328,7 @@ function normalizeCart(cart) {
       quantityAvailable: node.merchandise?.quantityAvailable ?? null,
       currentlyNotInStock: node.merchandise?.currentlyNotInStock ?? false,
       unlimited: node.merchandise?.product?.metafield?.value === 'true',
+      preOrder: node.merchandise?.product?.preOrderMeta?.value === 'true',
       product: {
         title: node.merchandise?.product?.title,
         handle: node.merchandise?.product?.handle,

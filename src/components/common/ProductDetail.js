@@ -21,7 +21,7 @@ export default function ProductDetail({ product }) {
   const allMedia = product.media ?? []
   const available = localAvailable ?? (selectedVariant?.availableForSale ?? false)
   const cartQty = getCartQty(selectedVariant?.id)
-  const isPreOrder = available && selectedVariant?.currentlyNotInStock === true
+  const isPreOrder = (product.preOrder && available) || (available && selectedVariant?.currentlyNotInStock === true)
   const maxQty = (product.unlimited || isPreOrder) ? Infinity : (selectedVariant?.quantityAvailable ?? Infinity)
   const canAdd = available && cartQty < maxQty
   const hasMultipleVariants = product.variants.length > 1 && product.variants[0]?.title !== 'Default Title'

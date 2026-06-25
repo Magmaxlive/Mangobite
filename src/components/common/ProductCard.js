@@ -14,7 +14,7 @@ export default function ProductCard({ product }) {
   const firstVariant = product.variants[0]
   const available = localAvailable ?? (firstVariant?.availableForSale ?? false)
   const cartQty = getCartQty(firstVariant?.id)
-  const isPreOrder = available && firstVariant?.currentlyNotInStock === true
+  const isPreOrder = (product.preOrder && available) || (available && firstVariant?.currentlyNotInStock === true)
   const maxQty = (product.unlimited || isPreOrder) ? Infinity : (firstVariant?.quantityAvailable ?? Infinity)
   const canAdd = available && cartQty < maxQty
 
