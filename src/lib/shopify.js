@@ -61,7 +61,8 @@ const ADMIN_PRODUCT_FIELDS = `
   descriptionHtml
   status
   options { id name values }
-  metafield(namespace: "custom", key: "unlimited_stock") { value }
+  unlimitedStockMeta: metafield(namespace: "custom", key: "unlimited_stock") { value }
+  preOrderMeta: metafield(namespace: "custom", key: "enable_pre_order") { value }
   images(first: 1) { edges { node { url altText width height } } }
   media(first: 10) {
     edges {
@@ -165,7 +166,8 @@ function normalizeAdminProduct(node) {
     images: media.filter(m => m.type === 'image'),
     variants,
     options: node.options ?? [],
-    unlimited: node.metafield?.value === 'true',
+    unlimited: node.unlimitedStockMeta?.value === 'true',
+    preOrder: node.preOrderMeta?.value === 'true',
   }
 }
 
@@ -304,7 +306,8 @@ const LINE_FRAGMENT = `
           title
           handle
           images(first: 1) { edges { node { url altText } } }
-          metafield(namespace: "custom", key: "unlimited_stock") { value }
+          unlimitedStockMeta: metafield(namespace: "custom", key: "unlimited_stock") { value }
+          preOrderMeta: metafield(namespace: "custom", key: "enable_pre_order") { value }
         }
       }
     }
@@ -324,7 +327,8 @@ function normalizeCart(cart) {
       price: node.merchandise?.price,
       quantityAvailable: node.merchandise?.quantityAvailable ?? null,
       currentlyNotInStock: node.merchandise?.currentlyNotInStock ?? false,
-      unlimited: node.merchandise?.product?.metafield?.value === 'true',
+      unlimited: node.merchandise?.product?.unlimitedStockMeta?.value === 'true',
+      preOrder: node.merchandise?.product?.preOrderMeta?.value === 'true',
       product: {
         title: node.merchandise?.product?.title,
         handle: node.merchandise?.product?.handle,
@@ -364,7 +368,7 @@ export async function getArticles() {
   })) ?? [])
 }
 
-export async function getArticle(blogHandle, articleHandle) {
+export async function getArticle(_blogHandle, articleHandle) {
   const query = `
     query GetArticle($query: String!) {
       articles(first: 1, query: $query) {

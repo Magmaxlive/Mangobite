@@ -31,13 +31,13 @@ export function CartProvider({ children }) {
     return c
   }, [cart])
 
-  const addItem = useCallback(async (variantId, quantity = 1, unlimited = false) => {
+  const addItem = useCallback(async (variantId, quantity = 1, unlimited = false, preOrder = false) => {
     setLoading(true)
     try {
       const c = await ensureCart()
       if (!c) return 'Could not create cart. Please try again.'
       const liveVariant = await getVariantAvailability(variantId)
-      if (liveVariant && !liveVariant.availableForSale) {
+      if (!preOrder && liveVariant && !liveVariant.availableForSale) {
         return 'Sorry, this product is currently out of stock.'
       }
       let stockWarning = null

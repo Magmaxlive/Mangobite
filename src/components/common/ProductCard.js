@@ -12,9 +12,9 @@ export default function ProductCard({ product }) {
   const [localAvailable, setLocalAvailable] = useState(null)
   const firstMedia = product.media?.[0]
   const firstVariant = product.variants[0]
-  const available = localAvailable ?? (firstVariant?.availableForSale ?? false)
+  const isPreOrder = product.preOrder
+  const available = isPreOrder ? true : (localAvailable ?? (firstVariant?.availableForSale ?? false))
   const cartQty = getCartQty(firstVariant?.id)
-  const isPreOrder = available && firstVariant?.currentlyNotInStock === true
   const maxQty = (product.unlimited || isPreOrder) ? Infinity : (firstVariant?.quantityAvailable ?? Infinity)
   const canAdd = available && cartQty < maxQty
 
@@ -86,7 +86,7 @@ export default function ProductCard({ product }) {
           <button
             onClick={async () => {
               setAddError(null)
-              const err = await addItem(firstVariant.id, 1, product.unlimited)
+              const err = await addItem(firstVariant.id, 1, product.unlimited, product.preOrder)
               if (err) { setAddError(err); setLocalAvailable(false) }
             }}
             disabled={loading}
