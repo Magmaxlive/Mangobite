@@ -129,9 +129,9 @@ export default async function ProductPage({ params }) {
       />
       <ProductDetail product={product} />
 
-      <div className="max-w-7xl mx-auto">
+      
         <Cards/>
-      </div>
+     
     </div>
   )
 }
